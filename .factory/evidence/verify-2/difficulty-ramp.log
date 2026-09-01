@@ -1,0 +1,20 @@
+[
+  {
+    "name": "Dock lesson",
+    "fewest": 4,
+    "limit": 12,
+    "tip": "Turn four misplaced tiles. Every channel must form one dock-to-harbor route. Seed archive-dock."
+  },
+  {
+    "name": "Breakwater bend",
+    "fewest": 20,
+    "limit": 28,
+    "tip": "Turn four misplaced tiles. Every channel must form one dock-to-harbor route. Seed archive-breakwater."
+  },
+  {
+    "name": "Harbor circuit",
+    "fewest": 17,
+    "limit": 25,
+    "tip": "Turn four misplaced tiles. Every channel must form one dock-to-harbor route. Seed archive-circuit."
+  }
+]

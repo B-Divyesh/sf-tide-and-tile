@@ -1,0 +1,77 @@
+{
+  "items": [
+    {
+      "url": "https://tide-and-tile.sociobot.in/",
+      "type": "document",
+      "worker": false,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/assets/index-XHlAIaoQ.js",
+      "type": "script",
+      "worker": false,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/assets/index-BUeXORPU.css",
+      "type": "stylesheet",
+      "worker": false,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/harbor-table.webp",
+      "type": "image",
+      "worker": false,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/sw.js",
+      "type": "script",
+      "worker": true,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/404.css",
+      "type": "fetch",
+      "worker": true,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/apple-touch-icon.png",
+      "type": "fetch",
+      "worker": true,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/favicon.svg",
+      "type": "fetch",
+      "worker": true,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/index.html",
+      "type": "fetch",
+      "worker": true,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/robots.txt",
+      "type": "fetch",
+      "worker": true,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/sitemap.xml",
+      "type": "fetch",
+      "worker": true,
+      "bytes": null
+    },
+    {
+      "url": "https://tide-and-tile.sociobot.in/social.png",
+      "type": "fetch",
+      "worker": true,
+      "bytes": null
+    }
+  ],
+  "totalKnownBytes": 0
+}

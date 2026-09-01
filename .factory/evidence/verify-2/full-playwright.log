@@ -1,0 +1,30 @@
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 219ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:3987) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:4000) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 15 tests using 1 worker
+(node:4019) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4019) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+···············
+  15 passed (14.9s)

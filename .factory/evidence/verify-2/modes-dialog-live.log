@@ -1,0 +1,56 @@
+{
+  "modes": [
+    {
+      "name": "Sample harbor",
+      "seed": "sample-harbor",
+      "signature": "Row 1, column 1: corner water channel joining north and east. Press to rotate.|R"
+    },
+    {
+      "name": "Today’s tide",
+      "seed": "2026-09-01",
+      "signature": "Row 1, column 1: corner water channel joining north and east. Harbor tile. Press"
+    },
+    {
+      "name": "Dock lesson",
+      "seed": "archive-dock",
+      "signature": "Row 1, column 1: corner water channel joining north and east. Press to rotate.|R"
+    },
+    {
+      "name": "Breakwater bend",
+      "seed": "archive-breakwater",
+      "signature": "Row 1, column 1: corner water channel joining north and east. Press to rotate.|R"
+    },
+    {
+      "name": "Harbor circuit",
+      "seed": "archive-circuit",
+      "signature": "Row 1, column 1: corner water channel joining east and south. Press to rotate.|R"
+    }
+  ],
+  "distinctSignatures": 5,
+  "soundPressedAfterReload": "true",
+  "dialog": {
+    "initialFocus": {
+      "tag": "H2",
+      "text": "The harbor is connected"
+    },
+    "focus": [
+      {
+        "tag": "BUTTON",
+        "text": "Play this route again"
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Copy result"
+      },
+      {
+        "tag": "BODY",
+        "text": "Skip to puzzleTIDE & TILEDemoArchivePrivacyDemo — sample data, nothing is savedReset demoStart for realDAILY HARBOR PUZZLEMake today’s harbor routeFor casual players who want a calm puzzle break with clear rules.Try it with sample dataLoads a guided board. It does not change your daily progress.Free to playWorks offline after the first visitProgress stays in this browserFour tiles need one turn in the sample.SAMPLE BOARDSample harborTurns 4 / 12Fewest 4Sound offRoute complete in 4 turns.HARBORDOCKRestart this boardShow the next ruleCopy resultRoute complete. Tide medal.ROUTE COMPLETEThe harbor is connectedTide medal. 4 turns; fewest is 4.Best for this seed: 4 turns.Play this route againCopy resultTHREE SEEDED ROUTESArchive boardsEach route has a different connected layout.Dock lesson Guided routeBreakwater bend Corner practiceHarbor circuit Full scrambleHow to play Tide & TileTurn a tile by tapping it or pressing Enter.Join every channel into one continuous route.Finish near the fewest turns to earn a medal.What it does not do: there are no timers, lives, accounts, or leaderboards. The turn limit gives each route a clear finish.A daily harbor-route puzzle for short breaks.Privacy · Terms · Built by Param Factory · v1.1-7b9f6eaHarbor illustration is original AI-generated artwork."
+      },
+      {
+        "tag": "BUTTON",
+        "text": "Play this route again"
+      }
+    ],
+    "axe": []
+  }
+}

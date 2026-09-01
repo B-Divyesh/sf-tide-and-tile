@@ -1,0 +1,220 @@
+{
+  "/": [
+    {
+      "text": "Skip to puzzle",
+      "href": "#main",
+      "absolute": "https://tide-and-tile.sociobot.in/#main",
+      "fragmentTargetExists": true,
+      "status": null
+    },
+    {
+      "text": "TIDE & TILE",
+      "href": "/",
+      "absolute": "https://tide-and-tile.sociobot.in/",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Demo",
+      "href": "/demo",
+      "absolute": "https://tide-and-tile.sociobot.in/demo",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Archive",
+      "href": "#archive",
+      "absolute": "https://tide-and-tile.sociobot.in/#archive",
+      "fragmentTargetExists": true,
+      "status": null
+    },
+    {
+      "text": "Privacy",
+      "href": "/privacy",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Try it with sample data",
+      "href": "/demo",
+      "absolute": "https://tide-and-tile.sociobot.in/demo",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Privacy",
+      "href": "/privacy",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Terms",
+      "href": "/terms",
+      "absolute": "https://tide-and-tile.sociobot.in/terms",
+      "fragmentTargetExists": true,
+      "status": 200
+    }
+  ],
+  "/demo": [
+    {
+      "text": "Skip to puzzle",
+      "href": "#main",
+      "absolute": "https://tide-and-tile.sociobot.in/demo#main",
+      "fragmentTargetExists": true,
+      "status": null
+    },
+    {
+      "text": "TIDE & TILE",
+      "href": "/",
+      "absolute": "https://tide-and-tile.sociobot.in/",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Demo",
+      "href": "/demo",
+      "absolute": "https://tide-and-tile.sociobot.in/demo",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Archive",
+      "href": "#archive",
+      "absolute": "https://tide-and-tile.sociobot.in/demo#archive",
+      "fragmentTargetExists": true,
+      "status": null
+    },
+    {
+      "text": "Privacy",
+      "href": "/privacy",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Try it with sample data",
+      "href": "/demo",
+      "absolute": "https://tide-and-tile.sociobot.in/demo",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Privacy",
+      "href": "/privacy",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Terms",
+      "href": "/terms",
+      "absolute": "https://tide-and-tile.sociobot.in/terms",
+      "fragmentTargetExists": true,
+      "status": 200
+    }
+  ],
+  "/privacy": [
+    {
+      "text": "Skip to puzzle",
+      "href": "#main",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy#main",
+      "fragmentTargetExists": true,
+      "status": null
+    },
+    {
+      "text": "TIDE & TILE",
+      "href": "/",
+      "absolute": "https://tide-and-tile.sociobot.in/",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Demo",
+      "href": "/demo",
+      "absolute": "https://tide-and-tile.sociobot.in/demo",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Archive",
+      "href": "#archive",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy#archive",
+      "fragmentTargetExists": false,
+      "status": null
+    },
+    {
+      "text": "Privacy",
+      "href": "/privacy",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Privacy",
+      "href": "/privacy",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Terms",
+      "href": "/terms",
+      "absolute": "https://tide-and-tile.sociobot.in/terms",
+      "fragmentTargetExists": true,
+      "status": 200
+    }
+  ],
+  "/terms": [
+    {
+      "text": "Skip to puzzle",
+      "href": "#main",
+      "absolute": "https://tide-and-tile.sociobot.in/terms#main",
+      "fragmentTargetExists": true,
+      "status": null
+    },
+    {
+      "text": "TIDE & TILE",
+      "href": "/",
+      "absolute": "https://tide-and-tile.sociobot.in/",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Demo",
+      "href": "/demo",
+      "absolute": "https://tide-and-tile.sociobot.in/demo",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Archive",
+      "href": "#archive",
+      "absolute": "https://tide-and-tile.sociobot.in/terms#archive",
+      "fragmentTargetExists": false,
+      "status": null
+    },
+    {
+      "text": "Privacy",
+      "href": "/privacy",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Privacy",
+      "href": "/privacy",
+      "absolute": "https://tide-and-tile.sociobot.in/privacy",
+      "fragmentTargetExists": true,
+      "status": 200
+    },
+    {
+      "text": "Terms",
+      "href": "/terms",
+      "absolute": "https://tide-and-tile.sociobot.in/terms",
+      "fragmentTargetExists": true,
+      "status": 200
+    }
+  ]
+}

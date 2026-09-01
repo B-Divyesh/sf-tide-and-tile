@@ -1,0 +1,448 @@
+
+===== npm test -- --grep @claim:demo-sandbox =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:demo-sandbox
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 205ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:1182) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1195) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:1214) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1214) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (3.3s)
+EXIT=0
+
+===== npm test -- --grep @claim:privacy-local =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:privacy-local
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 199ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:1377) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1390) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:1409) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1409) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (4.6s)
+EXIT=0
+
+===== npm test -- --grep @claim:keyboard-tiles =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:keyboard-tiles
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 208ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:1570) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1583) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:1602) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1602) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (3.1s)
+EXIT=0
+
+===== npm test -- --grep @claim:restart-resets =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:restart-resets
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 210ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:1759) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1772) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:1791) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1791) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (3.2s)
+EXIT=0
+
+===== npm test -- --grep @claim:continuous-route =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:continuous-route
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 215ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:1950) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:1963) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:1982) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:1982) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (3.4s)
+EXIT=0
+
+===== npm test -- --grep @claim:end-screens =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:end-screens
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 211ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:2169) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2182) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:2201) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2201) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (4.3s)
+EXIT=0
+
+===== npm test -- --grep @claim:progress-persistence =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:progress-persistence
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 254ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:2375) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2388) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:2407) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2407) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (3.5s)
+EXIT=0
+
+===== npm test -- --grep @claim:advertised-modes =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:advertised-modes
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 215ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:2556) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2569) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:2588) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2588) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (4.4s)
+EXIT=0
+
+===== npm run test:unit -- -t @claim:procedural-routes =====
+
+> tide-and-tile@1.0.0 test:unit
+> vitest run src -t @claim:procedural-routes
+
+
+ RUN  v3.2.7 /work/repo
+
+ ✓ src/game.test.ts (4 tests | 3 skipped) 8ms
+
+ Test Files  1 passed (1)
+      Tests  1 passed | 3 skipped (4)
+   Start at  23:06:41
+   Duration  1.08s (transform 104ms, setup 0ms, collect 105ms, tests 8ms, environment 0ms, prepare 190ms)
+
+EXIT=0
+
+===== npm test -- --grep @claim:frame-rate =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:frame-rate
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 238ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:2886) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:2899) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:2918) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2918) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (4.5s)
+EXIT=0
+
+===== npm test -- --grep @claim:offline-reload =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:offline-reload
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 253ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:3067) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3080) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:3099) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3099) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (3.3s)
+EXIT=0
+
+===== npm test -- --grep @claim:service-worker-update =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:service-worker-update
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 207ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:3245) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3258) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:3277) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3277) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (3.2s)
+EXIT=0
+
+===== npm test -- --grep @claim:response-policy =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:response-policy
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 210ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:3427) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3440) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:3459) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3459) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (2.3s)
+EXIT=0
+
+===== npm test -- --grep @claim:free-local-game =====
+
+> tide-and-tile@1.0.0 test
+> npm run build && playwright test --grep @claim:free-local-game
+
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 239ms
+service worker cache tide-tile-de8305436211
+[WebServer] (node:3573) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+[WebServer] (node:3586) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+[WebServer] (Use `node --trace-warnings ...` to show where the warning was created)
+
+Running 1 test using 1 worker
+(node:3605) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:3605) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+·
+  1 passed (4.1s)
+EXIT=0
+
+CLAIM_COMMAND_FAILURES=0

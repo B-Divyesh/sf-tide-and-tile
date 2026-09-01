@@ -1,0 +1,38 @@
+[
+  {
+    "visit": 1,
+    "tip": "Turn four misplaced tiles. Every channel must form one dock-to-harbor route. Seed 2026-09-01.",
+    "visits": "1",
+    "keys": [
+      "tide:tide-and-tile",
+      "tide:tide-and-tile:visits"
+    ]
+  },
+  {
+    "visit": 2,
+    "tip": "Every water end must meet its neighboring channel. Seed 2026-09-01.",
+    "visits": "1",
+    "keys": [
+      "tide:tide-and-tile",
+      "tide:tide-and-tile:visits"
+    ]
+  },
+  {
+    "visit": 3,
+    "tip": "Every water end must meet its neighboring channel. Seed 2026-09-01.",
+    "visits": "1",
+    "keys": [
+      "tide:tide-and-tile",
+      "tide:tide-and-tile:visits"
+    ]
+  },
+  {
+    "visit": 4,
+    "tip": "Every water end must meet its neighboring channel. Seed 2026-09-01.",
+    "visits": "1",
+    "keys": [
+      "tide:tide-and-tile",
+      "tide:tide-and-tile:visits"
+    ]
+  }
+]

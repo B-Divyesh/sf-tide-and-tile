@@ -1,0 +1,45 @@
+{
+  "rows": [
+    {
+      "path": "/404.css",
+      "bytes": 519
+    },
+    {
+      "path": "/apple-touch-icon.png",
+      "bytes": 60762
+    },
+    {
+      "path": "/assets/index-BUeXORPU.css",
+      "bytes": 8306
+    },
+    {
+      "path": "/assets/index-XHlAIaoQ.js",
+      "bytes": 16229
+    },
+    {
+      "path": "/favicon.svg",
+      "bytes": 264
+    },
+    {
+      "path": "/harbor-table.webp",
+      "bytes": 58118
+    },
+    {
+      "path": "/index.html",
+      "bytes": 1153
+    },
+    {
+      "path": "/robots.txt",
+      "bytes": 23
+    },
+    {
+      "path": "/sitemap.xml",
+      "bytes": 348
+    },
+    {
+      "path": "/social.png",
+      "bytes": 1999760
+    }
+  ],
+  "total": 2145482
+}

@@ -1,0 +1,62 @@
+{
+  "boxes": {
+    "title": {
+      "x": 25,
+      "y": 1092.8125,
+      "width": 271.515625,
+      "height": 41.46875,
+      "right": 296.515625,
+      "bottom": 1134.28125
+    },
+    "stats": {
+      "x": 302.515625,
+      "y": 1025.515625,
+      "width": 89.640625,
+      "height": 176.0625,
+      "right": 392.15625,
+      "bottom": 1201.578125
+    },
+    "sound": {
+      "x": 302.515625,
+      "y": 1136.890625,
+      "width": 89.640625,
+      "height": 64.6875,
+      "right": 392.15625,
+      "bottom": 1201.578125
+    },
+    "tip": {
+      "x": 25,
+      "y": 1207.578125,
+      "width": 340,
+      "height": 134.75,
+      "right": 365,
+      "bottom": 1342.328125
+    },
+    "banner": {
+      "x": 8,
+      "y": 68,
+      "width": 374,
+      "height": 218.8125,
+      "right": 382,
+      "bottom": 286.8125
+    },
+    "hero": {
+      "x": 12,
+      "y": 292.8125,
+      "width": 366,
+      "height": 709.703125,
+      "right": 378,
+      "bottom": 1002.515625
+    }
+  },
+  "overlap": {
+    "titleStats": false,
+    "soundTip": false
+  },
+  "offViewport": {
+    "stats": true,
+    "sound": true
+  },
+  "scrollWidth": 392,
+  "innerWidth": 390
+}

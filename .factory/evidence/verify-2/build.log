@@ -1,0 +1,14 @@
+
+> tide-and-tile@1.0.0 build
+> tsc --noEmit && vite build && node scripts/build-sw.mjs
+
+vite v6.4.3 building for production...
+transforming...
+✓ 6 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                  1.15 kB │ gzip: 0.50 kB
+dist/assets/index-BUeXORPU.css   8.31 kB │ gzip: 2.63 kB
+dist/assets/index-XHlAIaoQ.js   16.23 kB │ gzip: 6.68 kB
+✓ built in 210ms
+service worker cache tide-tile-de8305436211

@@ -1,0 +1,2 @@
+GET https://tide-and-tile.sociobot.in -> 200
+{"url":"https://tide-and-tile.sociobot.in","loadMs":694,"errors":[],"a11y":{"title":"Tide & Tile — Make a daily harbor route","lang":"en","h1":1,"main":true,"imgsMissingAlt":0,"buttonsUnlabeled":0,"textLength":1138}}

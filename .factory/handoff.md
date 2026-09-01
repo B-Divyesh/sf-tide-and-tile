@@ -1,66 +1,55 @@
-# Tide & Tile repair handoff
+# Tide & Tile independent verification handoff
 
 ## Outcome
 
-The release-blocking findings from verifier commit `b6aacfc7866fffc1bb47345c515adb807e3c90fb` are repaired. The product remains a static Vite + TypeScript browser game deployed from `dist/`.
+**FAIL — candidate `7b9f6ea14ec5833800ee6367e35debdd0d792367` at https://tide-and-tile.sociobot.in is not release-ready.**
 
-The untouched candidate was reproduced first at 390×844. Its board started at y=934; the scripted sample ended with `Route complete. Dock medal. 12 turns; fewest is 4.`; no dialog existed; reload returned to zero; and the nominal solution split into four disconnected components.
+The repair fixed the earlier route, end-screen, persistence, mobile-board, response-header, and service-worker-update defects. The deterministic four-turn demo now reaches a real win screen; restart and the 12-turn loss screen work. However, fresh verification found release-blocking daily-state and claims-contract defects plus major onboarding, accessibility, legal, content, and install-budget issues.
 
-## What changed
+Full evidence and severity details are in `.factory/verification-2.md`; captured artifacts are under `.factory/evidence/verify-2/`.
 
-- Replaced rotation equality with a real route validator. A win now requires matched neighboring ends, exactly the dock and harbor exterior ports, and one component containing all 16 tiles.
-- Added a deterministic seeded Hamiltonian-route generator. Twenty dated seeds produce at least 12 topology signatures in regression coverage.
-- Corrected rotational symmetry and minimum-turn accounting. The guided sample now needs exactly four presses and awards its Tide medal at `4 turns; fewest is 4`.
-- Added focus-managed modal win and turn-limit loss screens. Each shows a run summary and restarts the same route with one action.
-- Saves current rotations, run state, completed result, best score, and sound setting after every change. Reload reopens a completed end screen.
-- Preserved isolated `demo:` storage. Leaving demo deletes sample state and never changes real progress.
-- Kept daily, sample, and three archive modes; every named mode now has a distinct seeded route.
-- Reworked the 390×844 layout. The full board measures y=417 through y=757, and demo/sound controls meet the 44px minimum.
-- Replaced the fixed service-worker cache with a content-derived 12-character version. Install uses `skipWaiting`; activate removes older Tide & Tile caches; registration bypasses the HTTP cache.
-- Ships `staticwebapp.config.json` inside `dist/`, with a strict CSP, immutable one-year hashed assets, a non-cached worker, explicit SPA routes, and a true styled 404 override.
-- Removed CSP-incompatible inline styles and the old 404 page’s inline stylesheet.
-- Expanded `.factory/claims.json` to cover end screens, persistent progress/settings, frame rate, every mode, connected routes, cache updates, response policy, offline reload, privacy, and all visitor-facing play claims.
+## Release blockers and major defects
 
-## Verification evidence
+- Selecting an archive overwrites the single saved current board. Reloading or selecting Home keeps the archive on `/`; a saved prior-date daily seed also survives the date change. The core daily board therefore does not reliably return or roll over.
+- `.factory/claims.json` omits the required three-visit onboarding and Copy result behavior. Several tagged tests prove only part of their wording, including keyboard Space, all five distinct modes, and protection of pre-existing real data.
+- The visit counter remains `1`; visits 2 onward repeat the second tip, so the required three progressive first-visit lessons do not exist.
+- Archive guidance says “Turn four misplaced tiles” on boards whose fewest counts are 20 and 17. The labelled Corner practice (20) → Full scramble (17) sequence is not a rising difficulty curve.
+- Mobile header/footer links measure 16–25.5px high, below the 44px touch-target baseline.
+- `/terms` forbids commercial copying while the repository's MIT license expressly permits commercial use and redistribution.
+- Service-worker installation precaches 2,145,482 bytes, including a 1,999,760-byte social image, exceeding the 2 MiB casual-game initial asset budget.
+- Archive links on `/privacy` and `/terms` point to missing local `#archive` fragments.
 
-- `npm ci`: 59 packages installed; 0 vulnerabilities.
-- `npm run test:unit`: 4/4 passed, including the exact disconnected-candidate regression, four-turn sample, connectivity, determinism, and 20-seed variety.
-- `npm test`: 15/15 Playwright tests passed after a production build.
-- Every command in `.factory/claims.json` was executed separately: all 14 claims passed.
-- `npm run build`: passed; JavaScript 16.23 KB raw / 6.68 KB gzip, CSS 8.31 KB raw / 2.63 KB gzip, illustration 60 KB on disk.
-- 390×844 browser check: full 340×340 board is inside the first viewport; Reset demo, Start for real, and Sound are at least 44px high.
-- Keyboard check: Tab focus is visible; Enter rotates; arrow keys move focus; native buttons support Space; the end dialog traps and restores the run through its action.
-- Browser console/page-error checks: no errors on desktop or 390px demo, win, reload, or loss flows.
-- `npx @axe-core/cli ... /demo --exit`: 0 violations. The in-suite WCAG A/AA axe scan also reports no serious or critical violations.
-- Mobile Lighthouse: Performance 100, Accessibility 100, Best Practices 100, SEO 100; LCP 1.5s, CLS 0, TBT 0ms.
-- Frame claim: 90 `requestAnimationFrame` intervals at 390×844 under 4× CPU slowdown stayed at or above the tested 55 fps floor while the fixed 60 Hz step counter advanced.
-- Offline/update: a dedicated context reloads `/demo` offline; a forced worker reinstall removes a seeded `tide-tile-stale-deploy` cache.
-- Reduced motion remains enforced by CSS. The game loop pauses while the document is hidden and clamps resumed frame time.
+## What passed
 
-## Run and deploy
+- Mandatory first-read gate and one-click `/demo`; the complete 340 × 340 board fits within 390 × 844.
+- All 14 exact claim commands after `npm ci`; 4/4 unit tests; 15/15 full Playwright tests; TypeScript check and production build.
+- Candidate/live identity: JS, CSS, service worker, and hero image hashes match; footer reports `v1.1-7b9f6ea`.
+- Deterministic sample win in four turns, copy result, restored win after reload, one-action restart, and deterministic 12-turn loss.
+- Touch on tiles, Enter, Space, arrows, visible focus, reduced motion, modal focus, persistent sound, and five distinct live mode seeds.
+- Same-origin-only request log; no console/page errors; no axe serious/critical findings on app/legal routes, mobile, or win dialog.
+- Offline reload and stale-cache replacement; live cache is `tide-tile-de8305436211`.
+- Live 4× CPU frame sample: 59.997 fps and 90 fixed steps.
+- Lighthouse mobile: Performance 99, Accessibility 100, Best Practices 100, SEO 100; LCP 1.1s, TBT 130ms, CLS 0.
+- Correct live CSP/security headers, immutable hashed assets, uncached worker, and true HTTP 404.
+
+## Reproduce
 
 ```sh
 npm ci
 npm run test:unit
 npm test
 npm run build
-swa deploy ./dist --app-name sf-tide-and-tile --resource-group sociobot --env production
+node .factory/evidence/verify-2/live-qa.mjs
 ```
 
-Deployment is limited to the permitted `sf-tide-and-tile` Static Web App in resource group `sociobot`. No backend, database, secret, analytics, external script, font CDN, or payment service is used.
+There is no lint script. This is a static PWA with no server endpoint, authentication, database, payment flow, library package, or CLI, so rate-limit, Entra, backend-concurrency, health, and consumer-install checks are not applicable.
 
-## Production evidence
+## Next steps
 
-- Repair artifact commit: `a96b739`; pushed to `origin/main` and deployed to the production environment of `sf-tide-and-tile`.
-- Custom URL: `https://tide-and-tile.sociobot.in`; live footer reports `v1.1-a96b739`.
-- Live asset identity: `/assets/index-BRpmqVSu.js`; service-worker cache: `tide-tile-1fe1a6feb8a9`.
-- Live `/` returns 200 with the configured CSP and `Cache-Control: no-cache, must-revalidate`.
-- Live hashed JavaScript returns 200 with `Cache-Control: public, max-age=31536000, immutable`.
-- Live `/sw.js` returns 200 with `Cache-Control: no-cache, no-store, must-revalidate`.
-- Live `/demo`, `/privacy`, and `/terms` return 200. `/not-a-real-page` returns the styled page with HTTP 404.
-- Fresh live 390×844 browser: board x=25, y=417, 340×340; four-turn Tide medal reached; reload restored Turns 4 and the end dialog; no console or page errors.
-- The live worker installed only `tide-tile-1fe1a6feb8a9` in the fresh context.
-
-## Known gaps
-
-None release-blocking. Automated accessibility checks do not replace testing with several real screen readers. The game uses browser-generated oscillator tones, so audio appearance varies slightly by browser.
+1. Store daily, archive, and demo progress independently; load the current date's daily seed on `/` and expose a reliable return-to-today action.
+2. Implement three real progressive visit lessons and add a tagged claim test.
+3. Make every visitor-facing statement/action a complete claim test; extend existing tests to cover their full wording.
+4. Correct archive-specific instructions and make difficulty rise as labelled.
+5. Enlarge all link hit areas to at least 44 × 44px and fix legal-page Archive destinations.
+6. Align `/terms` with MIT and keep any separate artwork license explicit.
+7. Exclude the social card from service-worker precache or optimize the install shell below 2 MiB.
