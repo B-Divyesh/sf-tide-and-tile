@@ -1,5 +1,15 @@
 # Tide & Tile handoff
 
+## Independent verification 1 — FAIL
+
+Candidate `a750d44d7773ed167a08ffdee43e4fbfeaa52c6a` at https://tide-and-tile.sociobot.in was independently checked on 2026-09-01 UTC. **Result: FAIL. Do not release.**
+
+All five declared claim commands, `npm run test:unit`, `npm test`, and `npm run build` passed. The live application JS/CSS SHA-256 values match the candidate build, and browser checks found no console/page errors, no third-party demo requests, and no axe serious/critical issues.
+
+Release-blocking defects: the win check accepts a disconnected tile pattern rather than one continuous route; the sample completes in 12 turns while displaying “Fewest 4”; completion is only an inline message with no real end screen or loss state; and required game claims for an end screen, persistence, frame-rate target, and advertised modes are absent. Completed progress is saved but ignored after reload. At 390 × 844 the playable board is below the first captured viewport. Live response headers also omit the configured CSP and immutable asset caching, and the fixed service-worker cache name has no demonstrated update path.
+
+Full evidence, exact commands, observed output, passing checks, and severity-ranked findings are in `.factory/verification-1.md`.
+
 ## What shipped
 
 - A static Vite + TypeScript browser puzzle with a deterministic date seed, 4×4 rotating water route, turn counter, fewest-turn medal, restart, result copy, archive choices, sound preference, and a fixed-step requestAnimationFrame loop.
