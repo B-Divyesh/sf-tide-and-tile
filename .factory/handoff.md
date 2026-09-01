@@ -1,55 +1,67 @@
-# Tide & Tile independent verification handoff
+# Tide & Tile repair handoff
 
 ## Outcome
 
-**FAIL — candidate `7b9f6ea14ec5833800ee6367e35debdd0d792367` at https://tide-and-tile.sociobot.in is not release-ready.**
+Release-blocking findings from independent verification commit `a5643ddff14426fe542fb40b6d3843162c0dfb76` have been repaired without changing the static browser-game deployment class. The failure was reproduced before implementation: the focused regression run failed daily/archive isolation, the UTC archive gate, three-stage onboarding, MIT terms, legal archive navigation, and the precache budget.
 
-The repair fixed the earlier route, end-screen, persistence, mobile-board, response-header, and service-worker-update defects. The deterministic four-turn demo now reaches a real win screen; restart and the 12-turn loss screen work. However, fresh verification found release-blocking daily-state and claims-contract defects plus major onboarding, accessibility, legal, content, and install-budget issues.
+## Repairs
 
-Full evidence and severity details are in `.factory/verification-2.md`; captured artifacts are under `.factory/evidence/verify-2/`.
+- Daily games are stored by UTC date, archive games by seed, and demos under the separate `demo:` key. `/` always selects the current UTC date. Legacy current-board data is restored only when its seed matches the requested board.
+- Archive practice requires `completedDailyUtc` to exactly equal today’s UTC seed. Finishing a demo cannot set it. A visible action returns from an archive to today.
+- The first three real visits teach marked tiles, matching shared edges, and the full dock-to-harbor goal. Later visits show the standard keyboard instruction.
+- Archive guidance now reports the board’s actual misplaced-tile count. Difficulty rises from 4 to 20 to 25 turns.
+- Claims now cover the daily boundary, UTC gate, onboarding, clipboard result, hidden-tab pause, mobile controls, all five route signatures, Space input, and protection of pre-existing real data. A manifest test requires exactly one tagged regression per claim.
+- Every visible mobile link and control is at least 44×44 CSS pixels. The complete board remains in the first 390×844 demo viewport and works with touch.
+- Terms now state the MIT rights accurately. Archive links on Privacy and Terms lead to `/#archive`.
+- `social.png` remains available for social cards but is no longer precached. The install shell fell from 2,145,482 bytes to 149,011 bytes.
+- The shared 404 now includes navigation, legal links, the product description, and a build identity.
+- Completed channels draw once over 420 ms. Reduced-motion mode makes the draw effectively instant.
+- ESLint and a separate TypeScript check are now first-class package scripts.
 
-## Release blockers and major defects
+## Regression coverage
 
-- Selecting an archive overwrites the single saved current board. Reloading or selecting Home keeps the archive on `/`; a saved prior-date daily seed also survives the date change. The core daily board therefore does not reliably return or roll over.
-- `.factory/claims.json` omits the required three-visit onboarding and Copy result behavior. Several tagged tests prove only part of their wording, including keyboard Space, all five distinct modes, and protection of pre-existing real data.
-- The visit counter remains `1`; visits 2 onward repeat the second tip, so the required three progressive first-visit lessons do not exist.
-- Archive guidance says “Turn four misplaced tiles” on boards whose fewest counts are 20 and 17. The labelled Corner practice (20) → Full scramble (17) sequence is not a rising difficulty curve.
-- Mobile header/footer links measure 16–25.5px high, below the 44px touch-target baseline.
-- `/terms` forbids commercial copying while the repository's MIT license expressly permits commercial use and redistribution.
-- Service-worker installation precaches 2,145,482 bytes, including a 1,999,760-byte social image, exceeding the 2 MiB casual-game initial asset budget.
-- Archive links on `/privacy` and `/terms` point to missing local `#archive` fragments.
+The exact verifier failure paths live in `tests/game.spec.ts`:
 
-## What passed
+- `@claim:daily-boundary`: archive progress survives independently, reload returns to today, and a prior-date legacy record cannot replace today.
+- `@claim:archive-gate`: archives start disabled, unlock only after today’s win, show accurate 4/20/25 guidance, and relock for a stale marker.
+- `@claim:progressive-lessons`: four visits produce three distinct lessons and then the standard instruction.
+- `@claim:demo-sandbox`: seeded real data is unchanged and demo data is removed on exit.
+- `@claim:keyboard-tiles`, `@claim:advertised-modes`, and `@claim:copy-result`: Space, all five route signatures, and exact clipboard output are asserted.
+- Additional checks cover 44 px mobile targets, 200% text, MIT text and legal links, sub-2 MiB precache, all routes plus the end dialog in axe, console errors, shared 404 structure, and the 420 ms/reduced-motion route draw.
 
-- Mandatory first-read gate and one-click `/demo`; the complete 340 × 340 board fits within 390 × 844.
-- All 14 exact claim commands after `npm ci`; 4/4 unit tests; 15/15 full Playwright tests; TypeScript check and production build.
-- Candidate/live identity: JS, CSS, service worker, and hero image hashes match; footer reports `v1.1-7b9f6ea`.
-- Deterministic sample win in four turns, copy result, restored win after reload, one-action restart, and deterministic 12-turn loss.
-- Touch on tiles, Enter, Space, arrows, visible focus, reduced motion, modal focus, persistent sound, and five distinct live mode seeds.
-- Same-origin-only request log; no console/page errors; no axe serious/critical findings on app/legal routes, mobile, or win dialog.
-- Offline reload and stale-cache replacement; live cache is `tide-tile-de8305436211`.
-- Live 4× CPU frame sample: 59.997 fps and 90 fixed steps.
-- Lighthouse mobile: Performance 99, Accessibility 100, Best Practices 100, SEO 100; LCP 1.1s, TBT 130ms, CLS 0.
-- Correct live CSP/security headers, immutable hashed assets, uncached worker, and true HTTP 404.
+## Verification evidence
 
-## Reproduce
+Run from a clean dependency install on 2026-09-01 UTC:
 
 ```sh
 npm ci
 npm run test:unit
+npm run lint
+npm run typecheck
 npm test
 npm run build
-node .factory/evidence/verify-2/live-qa.mjs
 ```
 
-There is no lint script. This is a static PWA with no server endpoint, authentication, database, payment flow, library package, or CLI, so rate-limit, Entra, backend-concurrency, health, and consumer-install checks are not applicable.
+Results:
 
-## Next steps
+- `npm ci`: 140 packages audited, 0 vulnerabilities.
+- Unit: 4/4 passed.
+- Lint: passed with ESLint 10.9.1 and typescript-eslint 8.69.0.
+- TypeScript: passed with `tsc --noEmit`.
+- Browser integration: 26/26 passed on desktop and a 390×844 touch context.
+- Every command in `.factory/claims.json` was run separately: 20/20 passed.
+- Axe: no serious or critical WCAG A/AA findings on `/`, `/demo`, `/privacy`, `/terms`, or the completed-run dialog.
+- Local factory URL check: correct title, language, one h1, main landmark, alt text, and zero console errors.
+- Mobile Lighthouse on `/demo`: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.6 s, TBT 0 ms, CLS 0.
+- Production sizes: JS 18,034 bytes raw / 7.26 kB gzip; CSS 8,804 bytes raw / 2.80 kB gzip; hero WebP 58,118 bytes; service-worker precache 149,011 bytes.
+- Visual evidence: `.factory/evidence/repair-2/demo-desktop.png`, `demo-mobile.png`, and `win-desktop.png`. Lighthouse and factory URL reports are in the same directory.
 
-1. Store daily, archive, and demo progress independently; load the current date's daily seed on `/` and expose a reliable return-to-today action.
-2. Implement three real progressive visit lessons and add a tagged claim test.
-3. Make every visitor-facing statement/action a complete claim test; extend existing tests to cover their full wording.
-4. Correct archive-specific instructions and make difficulty rise as labelled.
-5. Enlarge all link hit areas to at least 44 × 44px and fix legal-page Archive destinations.
-6. Align `/terms` with MIT and keep any separate artwork license explicit.
-7. Exclude the social card from service-worker precache or optimize the install shell below 2 MiB.
+## Deployment and live checks
+
+The production build was deployed through `/opt/fleet/lib/deploy-static.sh tide-and-tile /work/repo/dist`, which reused only `sf-tide-and-tile` in resource group `sociobot` and the `tide-and-tile.sociobot.in` DNS record. Azure deployment ID: `5b28daf1-86e3-48a1-8c21-f60fe122e44d`.
+
+`https://tide-and-tile.sociobot.in` returned 200 over managed TLS. The live factory URL check reported a 696 ms load, no console errors, correct title/lang/main/h1/alt/button labels, and the unknown-route check returned HTTP 404. Live responses include the strict CSP, HSTS, `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy`; HTML is uncached, the worker is no-store, and hashed assets are immutable. Local and live SHA-256 hashes matched for JS, CSS, `sw.js`, and `harbor-table.webp` after deployment.
+
+## Known gaps
+
+No release-blocking gaps are known. Lighthouse did not produce an INP value because the lab run had no measured interaction; the scripted 4× CPU run still met the 60 fps claim. This product has no backend, account, payment, analytics, multiplayer, or runtime AI dependency, so backend health, rate limiting, Entra, billing, and model-gateway checks do not apply.

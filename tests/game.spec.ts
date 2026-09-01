@@ -182,13 +182,19 @@ test('@claim:service-worker-update removes an older deploy cache', async ({ brow
   const worker = await (await page.request.get('/sw.js')).text(); expect(worker).toMatch(/tide-tile-[a-f0-9]{12}/); await context.close();
 });
 
-test('@claim:response-policy ships CSP and immutable hashed-asset caching rules', async ({ request }) => {
-  const config = await (await request.get('/staticwebapp.config.json')).json();
+test('@claim:response-policy ships CSP and immutable hashed-asset caching rules', async ({ request, baseURL }) => {
+  const config = JSON.parse(readFileSync('staticwebapp.config.json', 'utf8'));
   expect(config.responseOverrides['404']).toEqual({ rewrite: '/404.html', statusCode: 404 });
   expect(config.globalHeaders['Content-Security-Policy']).toContain("frame-ancestors 'none'");
   expect(config.globalHeaders['Content-Security-Policy']).not.toContain("'unsafe-inline'");
   expect(config.routes).toContainEqual({ route: '/assets/*', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } });
   expect(config.routes).toContainEqual({ route: '/sw.js', headers: { 'Cache-Control': 'no-cache, no-store, must-revalidate' } });
+  if (baseURL?.startsWith('https://')) {
+    const pageResponse = await request.get('/'); expect(pageResponse.headers()['content-security-policy']).toContain("frame-ancestors 'none'");
+    const html = await pageResponse.text(), asset = html.match(/src="(\/assets\/[^"]+\.js)"/)![1];
+    expect((await request.get(asset)).headers()['cache-control']).toContain('immutable');
+    expect((await request.get('/sw.js')).headers()['cache-control']).toContain('no-store');
+  }
 });
 
 test('@claim:free-local-game plays without accounts, payments, timers, lives, or leaderboards', async ({ page }) => {
@@ -229,15 +235,17 @@ test('service worker precache remains below 2 MiB and omits social preview art',
   expect(bytes).toBeLessThan(2 * 1024 * 1024);
 });
 
-test('all app routes and the end dialog have no serious or critical axe violations', async ({ page }) => {
+test('all app routes and the end dialog have no serious or critical axe violations', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ bypassCSP: true }); const page = await context.newPage();
   for (const route of ['/', '/demo', '/privacy', '/terms']) {
-    await page.goto(route); await page.addScriptTag({ content: readFileSync('node_modules/axe-core/axe.min.js', 'utf8') });
+    await page.goto(`${baseURL}${route}`); await page.addScriptTag({ content: readFileSync('node_modules/axe-core/axe.min.js', 'utf8') });
     const result = await page.evaluate(async () => await (window as typeof window & { axe: { run: (element?: unknown, options?: unknown) => Promise<{ violations: Array<{ impact: string }> }> } }).axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } }));
     expect(result.violations.filter(violation => ['serious', 'critical'].includes(violation.impact)), route).toEqual([]);
   }
-  await page.goto('/demo'); await solveSample(page); await page.addScriptTag({ content: readFileSync('node_modules/axe-core/axe.min.js', 'utf8') });
+  await page.goto(`${baseURL}/demo`); await solveSample(page); await page.addScriptTag({ content: readFileSync('node_modules/axe-core/axe.min.js', 'utf8') });
   const dialogResult = await page.evaluate(async () => await (window as typeof window & { axe: { run: (element?: unknown, options?: unknown) => Promise<{ violations: Array<{ impact: string }> }> } }).axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } }));
   expect(dialogResult.violations.filter(violation => ['serious', 'critical'].includes(violation.impact))).toEqual([]);
+  await context.close();
 });
 
 test('the completed route draws once and reduced motion shortens it to an instant state', async ({ browser, baseURL }) => {
