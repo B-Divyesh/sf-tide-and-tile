@@ -1,6 +1,6 @@
 import './style.css';
 import './mobile.css';
-import { dailySeed, exits, label, makeBoard, rotate, solved, type Board, type GameState } from './game';
+import { dailySeed, label, makeBoard, rotate, solved, type Board, type GameState } from './game';
 
 declare const __BUILD_VERSION__: string;
 

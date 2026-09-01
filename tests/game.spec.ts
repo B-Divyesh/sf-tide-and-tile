@@ -240,6 +240,14 @@ test('all app routes and the end dialog have no serious or critical axe violatio
   expect(dialogResult.violations.filter(violation => ['serious', 'critical'].includes(violation.impact))).toEqual([]);
 });
 
+test('the completed route draws once and reduced motion shortens it to an instant state', async ({ browser, baseURL }) => {
+  const animatedContext = await browser.newContext(); const animated = await animatedContext.newPage(); await animated.goto(`${baseURL}/demo`); await solveSample(animated);
+  await expect(animated.locator('#board')).toHaveClass(/connected/); expect(await animated.locator('.channel').first().evaluate(element => getComputedStyle(element).animationName)).toBe('harbor-flow'); await animatedContext.close();
+  const context = await browser.newContext({ reducedMotion: 'reduce' }); const reduced = await context.newPage(); await reduced.goto(`${baseURL}/demo`); await solveSample(reduced);
+  const duration = await reduced.locator('.channel').first().evaluate(element => getComputedStyle(element).animationDuration);
+  expect(Number.parseFloat(duration)).toBeLessThanOrEqual(0.001); await context.close();
+});
+
 test('routes load without console errors and the standalone 404 keeps shared navigation', async ({ page }) => {
   const errors: string[] = []; page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); page.on('pageerror', error => errors.push(error.message));
   for (const route of ['/', '/demo', '/privacy', '/terms']) { await page.goto(route); await expect(page.locator('main')).toBeVisible(); await expect(page.locator('h1')).toHaveCount(1); }

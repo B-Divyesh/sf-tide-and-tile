@@ -17,6 +17,8 @@ Open the printed URL. Use `/demo` for the guided board.
 
 ```sh
 npm run test:unit
+npm run lint
+npm run typecheck
 npm test
 npm run build
 ```
