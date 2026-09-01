@@ -49,6 +49,18 @@ swa deploy ./dist --app-name sf-tide-and-tile --resource-group sociobot --env pr
 
 Deployment is limited to the permitted `sf-tide-and-tile` Static Web App in resource group `sociobot`. No backend, database, secret, analytics, external script, font CDN, or payment service is used.
 
+## Production evidence
+
+- Repair artifact commit: `a96b739`; pushed to `origin/main` and deployed to the production environment of `sf-tide-and-tile`.
+- Custom URL: `https://tide-and-tile.sociobot.in`; live footer reports `v1.1-a96b739`.
+- Live asset identity: `/assets/index-BRpmqVSu.js`; service-worker cache: `tide-tile-1fe1a6feb8a9`.
+- Live `/` returns 200 with the configured CSP and `Cache-Control: no-cache, must-revalidate`.
+- Live hashed JavaScript returns 200 with `Cache-Control: public, max-age=31536000, immutable`.
+- Live `/sw.js` returns 200 with `Cache-Control: no-cache, no-store, must-revalidate`.
+- Live `/demo`, `/privacy`, and `/terms` return 200. `/not-a-real-page` returns the styled page with HTTP 404.
+- Fresh live 390×844 browser: board x=25, y=417, 340×340; four-turn Tide medal reached; reload restored Turns 4 and the end dialog; no console or page errors.
+- The live worker installed only `tide-tile-1fe1a6feb8a9` in the fresh context.
+
 ## Known gaps
 
 None release-blocking. Automated accessibility checks do not replace testing with several real screen readers. The game uses browser-generated oscillator tones, so audio appearance varies slightly by browser.
