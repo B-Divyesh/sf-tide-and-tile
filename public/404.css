@@ -1,0 +1,6 @@
+:root { color:#102a43; background:#fff9e9; font-family:Arial,sans-serif }
+body { margin:0; display:grid; min-height:100vh; place-items:center; padding:24px }
+main { max-width:520px; border:4px solid #102a43; padding:32px; box-shadow:10px 10px #c4473d }
+h1 { font:900 clamp(2.3rem,8vw,3rem)/1 Arial,sans-serif }
+a { display:inline-block; min-height:44px; padding:10px 12px; background:#f4c95d; border:3px solid #102a43; color:#102a43; font-weight:bold }
+a:focus-visible { outline:4px solid #c4473d; outline-offset:4px }

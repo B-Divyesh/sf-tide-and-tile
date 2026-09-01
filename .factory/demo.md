@@ -1,7 +1,7 @@
 # Demo verification
 
-Open `/demo` (the canonical demo route). It immediately loads the guided **Sample harbor** board. Tap a tile, use Enter on a focused tile, or use arrow keys to choose a neighboring tile.
+Open `/demo`. It immediately loads **Sample harbor**, a connected 4×4 route with four misplaced tiles. Each misplaced tile needs one clockwise turn, so the shown fewest score is exactly four.
 
-The demo banner remains visible while sample mode is active. **Reset demo** replaces the sample state. **Start for real** clears `demo:tide-and-tile` and opens the current daily board. Demo mode never reads or writes the real `tide:tide-and-tile` key.
+The banner stays visible in demo mode. **Reset demo** restores the sample. **Start for real** deletes `demo:tide-and-tile` and opens the daily board. Demo mode never reads or writes `tide:tide-and-tile`.
 
-The service worker caches the shell and game resources after the first visit, so the sample board can reload offline.
+Complete the four marked rotations to reach the win screen. Use any wrong tile until turn 12 to reach the loss screen. Both screens restart the same route with one action. The versioned service worker makes the sample available after an offline reload.

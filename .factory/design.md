@@ -22,7 +22,9 @@ The light treatment is intentional: it reads like a printed puzzle sheet under b
 
 Use the local system sans stack, headed by `Arial Black`, so the interface has a compact printed-sign feel without a network font. Body copy uses `Arial`. Spacing follows an 8px scale. Tiles are square with 4px ink borders and hard 6px shadows. Buttons depress toward their shadows. A selected/changed tile turns 90° in 180ms; harbor flow draws in 420ms. Reduced-motion users see the new state immediately. There are no loops or flashes.
 
-The board starts at 4×4 for daily play. Tutorial visits introduce one rule at a time: rotate, connect, then spend fewer turns. Archive boards grow from a gentle 3×3 lesson to a denser 5×5 route.
+The board stays 4×4 so it fits completely within the first 390×844 screen. The guided sample has four misplaced tiles and a true four-turn minimum. Daily and archive seeds create distinct Hamiltonian paths through all 16 tiles. The seeded depth-first generator prefers low-degree neighbors, which produces bends and straights without breaking the continuous dock-to-harbor solution. Twenty dated seeds must produce at least 12 topology signatures in the unit suite. A run ends when the route connects or its turn limit is reached.
+
+Win and loss use a centered paper-sheet dialog over the dark board. This is the run summary, not a toast: it names the result, reports turns, and offers a one-action replay. Browser storage restores the whole current board and reopens a completed end screen after reload.
 
 ## Original asset plan and provenance
 
@@ -32,4 +34,4 @@ Prompt sheet: *top-down editorial illustration of a small harbor puzzle table, f
 
 ## Accessibility and performance
 
-Tiles expose textual channel descriptions and row/column labels. Water uses connection shape plus colour. Controls are at least 44px. Game code is plain Canvas 2D and TypeScript; art is lazy-loaded and intended to remain under 300 KB. Local-only settings and progress are namespaced by real/demo mode.
+Tiles expose textual channel descriptions and row/column labels. Water uses connection shape plus colour. Dock and harbor have text labels as well as separate outlines. Controls are at least 44px. Game code is plain DOM/SVG and TypeScript; the illustration remains under 300 KB. The fixed 60 Hz loop pauses in hidden tabs and clamps stalls. Local-only settings and progress are namespaced by real/demo mode.
