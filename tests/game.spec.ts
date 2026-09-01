@@ -1,16 +1,26 @@
 import { expect, test } from '@playwright/test';
-import { readFileSync } from 'node:fs';
+import { readFileSync, statSync } from 'node:fs';
+import { join } from 'node:path';
 
 async function solveSample(page: import('@playwright/test').Page) {
   const needed = await page.locator('.tile').evaluateAll(tiles => tiles.map(tile => Number((tile as HTMLElement).dataset.needed)));
   for (let index = 0; index < needed.length; index++) for (let turn = 0; turn < needed[index]; turn++) await page.locator('.tile').nth(index).click();
 }
 
+async function boardSignature(page: import('@playwright/test').Page) {
+  return page.locator('.tile').evaluateAll(tiles => tiles.map(tile => `${(tile as HTMLElement).dataset.needed}:${tile.getAttribute('aria-label')}`).join('|'));
+}
+
 test('@claim:demo-sandbox loads a guided sample and writes only demo storage', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.setItem('tide:tide-and-tile', JSON.stringify({ sentinel: 'real progress' })));
   await page.goto('/demo'); await expect(page.getByText('Demo — sample data, nothing is saved')).toBeVisible();
   await page.locator('.tile').first().click();
   const keys = await page.evaluate(() => Object.keys(localStorage));
-  expect(keys.length).toBeGreaterThan(0); expect(keys.every(key => key.startsWith('demo:'))).toBeTruthy();
+  expect(keys.some(key => key.startsWith('demo:'))).toBeTruthy();
+  expect(await page.evaluate(() => localStorage.getItem('tide:tide-and-tile'))).toBe('{"sentinel":"real progress"}');
+  await page.getByRole('link', { name: 'Privacy' }).first().click();
+  expect(await page.evaluate(() => localStorage.getItem('demo:tide-and-tile'))).toBeNull();
 });
 
 test('@claim:privacy-local only makes same-origin requests during a complete demo run', async ({ page, baseURL }) => {
@@ -23,7 +33,68 @@ test('@claim:keyboard-tiles rotates and moves across tiles with the keyboard', a
   await page.goto('/demo'); const first = page.locator('.tile').first(); await first.focus();
   const before = await first.getAttribute('aria-label'); await page.keyboard.press('Enter');
   await expect(page.locator('.tile').first()).not.toHaveAttribute('aria-label', before!);
+  const afterEnter = await page.locator('.tile').first().getAttribute('aria-label'); await page.keyboard.press('Space');
+  await expect(page.locator('.tile').first()).not.toHaveAttribute('aria-label', afterEnter!);
+  await expect(page.locator('.tile').first()).toBeFocused();
   await page.keyboard.press('ArrowRight'); await expect(page.locator('.tile').nth(1)).toBeFocused();
+});
+
+test('@claim:daily-boundary always opens today and keeps archive progress separate', async ({ page }) => {
+  await page.goto('/');
+  const today = await page.locator('#board').getAttribute('data-seed');
+  expect(today).toBe(await page.evaluate(() => new Date().toISOString().slice(0, 10)));
+  await solveSample(page);
+  await page.getByRole('button', { name: 'Play this route again' }).click();
+  await page.getByRole('button', { name: /^Dock lesson/ }).click();
+  await page.locator('.tile').first().click();
+  await page.reload();
+  await expect(page.locator('#game-title')).toHaveText('Today’s tide');
+  await expect(page.locator('#board')).toHaveAttribute('data-seed', today!);
+  await page.getByRole('button', { name: /^Dock lesson/ }).click();
+  await expect(page.locator('#turns')).toHaveText('1');
+  await page.getByRole('button', { name: 'Return to today’s board' }).click();
+  await page.evaluate(() => {
+    localStorage.setItem('tide:tide-and-tile', JSON.stringify({
+      current: { seed: '1999-01-01', name: 'Yesterday’s tide', guided: false, turns: 1, state: 'playing', rotations: Array(16).fill(0) }
+    }));
+  });
+  await page.reload();
+  await expect(page.locator('#board')).toHaveAttribute('data-seed', today!);
+});
+
+test('@claim:archive-gate requires today’s exact UTC completion before rising archive practice', async ({ page }) => {
+  await page.goto('/');
+  const archiveButtons = page.locator('[data-archive]');
+  await expect(archiveButtons.first()).toBeDisabled();
+  await solveSample(page);
+  await expect(archiveButtons.first()).toBeEnabled();
+  await page.getByRole('button', { name: 'Play this route again' }).click();
+  const expectedNames = ['Dock lesson', 'Breakwater bend', 'Harbor circuit'];
+  const pars: number[] = [];
+  for (const name of expectedNames) {
+    await page.getByRole('button', { name: new RegExp(`^${name}`) }).click();
+    pars.push(Number(await page.locator('#par').textContent()));
+    await expect(page.locator('#tip')).toContainText(`${pars.at(-1)} misplaced`);
+    await page.getByRole('button', { name: 'Return to today’s board' }).click();
+  }
+  expect(pars[0]).toBeLessThan(pars[1]); expect(pars[1]).toBeLessThan(pars[2]);
+  await page.evaluate(() => {
+    const key = 'tide:tide-and-tile'; const data = JSON.parse(localStorage.getItem(key) || '{}');
+    data.completedDailyUtc = '1999-01-01'; localStorage.setItem(key, JSON.stringify(data));
+  });
+  await page.reload(); await expect(archiveButtons.first()).toBeDisabled();
+});
+
+test('@claim:progressive-lessons shows three different lessons on the first three real visits', async ({ page }) => {
+  const lessons: string[] = [];
+  for (let visit = 0; visit < 4; visit++) {
+    await page.goto('/'); lessons.push((await page.locator('#tip').textContent())!);
+  }
+  expect(new Set(lessons.slice(0, 3)).size).toBe(3);
+  expect(lessons[0]).toContain('marked tiles');
+  expect(lessons[1]).toContain('shared edge');
+  expect(lessons[2]).toContain('DOCK to HARBOR');
+  expect(lessons[3]).toContain('arrow keys');
 });
 
 test('@claim:restart-resets returns the board and turn count to their initial state', async ({ page }) => {
@@ -54,15 +125,33 @@ test('@claim:progress-persistence restores a completed board, best score, and so
 });
 
 test('@claim:advertised-modes loads sample, daily, and all three distinct archive routes', async ({ page }) => {
-  await page.goto('/demo'); expect(await page.locator('#board').getAttribute('data-seed')).toBe('sample-harbor');
+  await page.goto('/demo'); expect(await page.locator('#board').getAttribute('data-seed')).toBe('sample-harbor'); const signatures = new Set<string>([await boardSignature(page)]);
   await page.getByRole('button', { name: 'Start for real' }).click(); await expect(page).toHaveURL('/');
-  const signatures = new Set<string>();
+  signatures.add(await boardSignature(page)); await solveSample(page); await page.getByRole('button', { name: 'Play this route again' }).click();
   for (const name of ['Dock lesson', 'Breakwater bend', 'Harbor circuit']) {
     await page.getByRole('button', { name: new RegExp(`^${name}`) }).click();
-    signatures.add((await page.locator('.tile').evaluateAll(tiles => tiles.map(tile => tile.getAttribute('aria-label')).join('|'))));
+    signatures.add(await boardSignature(page));
     await expect(page.locator('#game-title')).toHaveText(name);
+    await page.getByRole('button', { name: 'Return to today’s board' }).click();
   }
-  expect(signatures.size).toBe(3);
+  expect(signatures.size).toBe(5);
+});
+
+test('@claim:copy-result copies only the seed, turns, fewest score, and route result', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']); await page.goto('/demo'); await solveSample(page);
+  await page.locator('#end-share').click();
+  await expect(page.locator('#result')).toHaveText(/Result copied/);
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('Tide & Tile sample-harbor\n4 turns · fewest 4\nOne continuous harbor route');
+});
+
+test('@claim:hidden-pause pauses fixed simulation steps while the page is hidden', async ({ page }) => {
+  await page.goto('/demo');
+  const hiddenStart = Number(await page.locator('body').getAttribute('data-simulation-steps'));
+  await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => true }); document.dispatchEvent(new Event('visibilitychange')); });
+  await page.waitForTimeout(350);
+  const hiddenEnd = Number(await page.locator('body').getAttribute('data-simulation-steps')); expect(hiddenEnd - hiddenStart).toBeLessThanOrEqual(2);
+  await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => false }); document.dispatchEvent(new Event('visibilitychange')); });
+  await expect.poll(async () => Number(await page.locator('body').getAttribute('data-simulation-steps'))).toBeGreaterThan(hiddenEnd);
 });
 
 test('@claim:frame-rate keeps the fixed game loop near 60 frames per second', async ({ page }) => {
@@ -95,6 +184,7 @@ test('@claim:service-worker-update removes an older deploy cache', async ({ brow
 
 test('@claim:response-policy ships CSP and immutable hashed-asset caching rules', async ({ request }) => {
   const config = await (await request.get('/staticwebapp.config.json')).json();
+  expect(config.responseOverrides['404']).toEqual({ rewrite: '/404.html', statusCode: 404 });
   expect(config.globalHeaders['Content-Security-Policy']).toContain("frame-ancestors 'none'");
   expect(config.globalHeaders['Content-Security-Policy']).not.toContain("'unsafe-inline'");
   expect(config.routes).toContainEqual({ route: '/assets/*', headers: { 'Cache-Control': 'public, max-age=31536000, immutable' } });
@@ -107,14 +197,63 @@ test('@claim:free-local-game plays without accounts, payments, timers, lives, or
   const turns = await page.locator('#turns').textContent(); await page.waitForTimeout(1100); await expect(page.locator('#turns')).toHaveText(turns!);
 });
 
-test('390px first screen contains the full playable board and 44px controls', async ({ page }) => {
-  await page.setViewportSize({ width: 390, height: 844 }); await page.goto('/demo');
+test('@claim:mobile-controls keeps the full board and 44px controls usable by touch at 390px', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }); const page = await context.newPage(); await page.goto(`${baseURL}/demo`);
   const board = await page.locator('#board').boundingBox(); expect(board).not.toBeNull(); expect(board!.y).toBeLessThan(844); expect(board!.y + board!.height).toBeLessThanOrEqual(844);
-  for (const name of ['Reset demo', 'Start for real', 'Sound on']) { const box = await page.getByRole('button', { name }).boundingBox(); expect(box!.height).toBeGreaterThanOrEqual(44); }
+  await page.locator('.tile').first().tap(); await expect(page.locator('#turns')).toHaveText('1');
+  for (const element of await page.locator('a, button').all()) { const box = await element.boundingBox(); if (box) { expect(box.height).toBeGreaterThanOrEqual(44); expect(box.width).toBeGreaterThanOrEqual(44); } }
+  await context.close();
 });
 
-test('accessibility scan has no serious or critical violations', async ({ page }) => {
-  await page.goto('/demo'); await page.addScriptTag({ content: readFileSync('node_modules/axe-core/axe.min.js', 'utf8') });
-  const result = await page.evaluate(async () => await (window as typeof window & { axe: { run: (element?: unknown, options?: unknown) => Promise<{ violations: Array<{ impact: string }> }> } }).axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } }));
-  expect(result.violations.filter(violation => ['serious', 'critical'].includes(violation.impact))).toEqual([]);
+test('mobile text at 200% keeps controls and content inside the viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 }); await page.goto('/demo');
+  await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
+  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+  expect(overflow).toBeLessThanOrEqual(2);
+  await expect(page.getByRole('heading', { name: 'Make today’s harbor route' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Restart this board' })).toBeVisible();
+});
+
+test('legal terms match MIT rights and legal Archive links return to the home archive', async ({ page }) => {
+  await page.goto('/terms'); await expect(page.getByText(/MIT License permits commercial use, copying, modification, distribution, sublicensing, and sale/i)).toBeVisible();
+  const archive = page.getByRole('link', { name: 'Archive' }); await expect(archive).toHaveAttribute('href', '/#archive');
+  await archive.click(); await expect(page).toHaveURL('/#archive'); await expect(page.getByRole('heading', { name: 'Archive boards' })).toBeVisible();
+  await page.goto('/privacy'); const privacyArchive = page.getByRole('link', { name: 'Archive' }); await expect(privacyArchive).toHaveAttribute('href', '/#archive'); await privacyArchive.click(); await expect(page).toHaveURL('/#archive');
+});
+
+test('service worker precache remains below 2 MiB and omits social preview art', async ({ request }) => {
+  const worker = await (await request.get('/sw.js')).text();
+  const shell = JSON.parse(worker.match(/const SHELL=(\[[^;]+\]);/)![1]) as string[];
+  expect(shell).not.toContain('/social.png');
+  const bytes = shell.reduce((sum, url) => sum + statSync(join('dist', url)).size, 0);
+  expect(bytes).toBeLessThan(2 * 1024 * 1024);
+});
+
+test('all app routes and the end dialog have no serious or critical axe violations', async ({ page }) => {
+  for (const route of ['/', '/demo', '/privacy', '/terms']) {
+    await page.goto(route); await page.addScriptTag({ content: readFileSync('node_modules/axe-core/axe.min.js', 'utf8') });
+    const result = await page.evaluate(async () => await (window as typeof window & { axe: { run: (element?: unknown, options?: unknown) => Promise<{ violations: Array<{ impact: string }> }> } }).axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } }));
+    expect(result.violations.filter(violation => ['serious', 'critical'].includes(violation.impact)), route).toEqual([]);
+  }
+  await page.goto('/demo'); await solveSample(page); await page.addScriptTag({ content: readFileSync('node_modules/axe-core/axe.min.js', 'utf8') });
+  const dialogResult = await page.evaluate(async () => await (window as typeof window & { axe: { run: (element?: unknown, options?: unknown) => Promise<{ violations: Array<{ impact: string }> }> } }).axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } }));
+  expect(dialogResult.violations.filter(violation => ['serious', 'critical'].includes(violation.impact))).toEqual([]);
+});
+
+test('routes load without console errors and the standalone 404 keeps shared navigation', async ({ page }) => {
+  const errors: string[] = []; page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); page.on('pageerror', error => errors.push(error.message));
+  for (const route of ['/', '/demo', '/privacy', '/terms']) { await page.goto(route); await expect(page.locator('main')).toBeVisible(); await expect(page.locator('h1')).toHaveCount(1); }
+  await page.goto('/404.html');
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible(); await expect(page.locator('footer')).toContainText('v1.2-repair');
+  expect(errors).toEqual([]);
+});
+
+test('claim manifest has one exact tagged regression for every declared promise', async () => {
+  const claims = JSON.parse(readFileSync('.factory/claims.json', 'utf8')) as Array<{ id: string; test: string }>;
+  expect(new Set(claims.map(claim => claim.id)).size).toBe(claims.length);
+  const source = `${readFileSync('tests/game.spec.ts', 'utf8')}\n${readFileSync('src/game.test.ts', 'utf8')}`;
+  for (const claim of claims) {
+    expect(claim.test).toContain(`@claim:${claim.id}`);
+    expect(source.match(new RegExp(`@claim:${claim.id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'g'))).toHaveLength(1);
+  }
 });

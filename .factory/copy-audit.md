@@ -11,11 +11,15 @@
 | Works offline after the first visit | 6 | pass |
 | Progress stays in this browser | 5 | pass |
 | Four tiles need one turn in the sample. | 8 | pass |
-| Turn four misplaced tiles. | 4 | pass |
-| Every channel must form one dock-to-harbor route. | 7 | pass |
-| Use arrow keys to move, then Enter or Space to turn a tile. | 13 | pass |
-| Each route has a different connected layout. | 7 | pass |
-| Turn a tile by tapping it or pressing Enter. | 10 | pass |
+| Start with the four marked tiles. | 6 | pass |
+| Turn each blue channel toward the next tile. | 8 | pass |
+| Check every shared edge. | 4 | pass |
+| Each water end must meet its neighboring channel. | 8 | pass |
+| Connect every tile from DOCK to HARBOR. | 7 | pass |
+| Finish near the fewest turns. | 5 | pass |
+| Complete today’s UTC board to unlock archive practice. | 8 | pass |
+| Practice three routes that rise from 4 to 25 misplaced tiles. | 11 | pass |
+| Turn a tile by tapping it or pressing Enter or Space. | 11 | pass |
 | Join every channel into one continuous route. | 7 | pass |
 | Finish near the fewest turns to earn a medal. | 9 | pass |
 | There are no timers, lives, accounts, or leaderboards. | 8 | pass |
@@ -33,3 +37,5 @@ No sentence exceeds 22 words. No sentence contains a banned word.
 | Finished connection | route |
 | Sample-only state | demo |
 | Maximum moves | turn limit |
+| Older practice layout | archive |
+| Current date boundary | UTC date |

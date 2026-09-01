@@ -20,11 +20,11 @@ The light treatment is intentional: it reads like a printed puzzle sheet under b
 
 ## Type, rhythm, and interaction
 
-Use the local system sans stack, headed by `Arial Black`, so the interface has a compact printed-sign feel without a network font. Body copy uses `Arial`. Spacing follows an 8px scale. Tiles are square with 4px ink borders and hard 6px shadows. Buttons depress toward their shadows. A selected/changed tile turns 90° in 180ms; harbor flow draws in 420ms. Reduced-motion users see the new state immediately. There are no loops or flashes.
+Use the local system sans stack, headed by `Arial Black`, so the interface has a compact printed-sign feel without a network font. Body copy uses `Arial`. Spacing follows an 8px scale. Tiles are square with 4px ink borders and hard 6px shadows. Buttons depress toward their shadows. A selected tile turns 90° in 180ms. The completed harbor channels draw once in 420ms. Reduced-motion users see both states immediately. There are no loops or flashes.
 
-The board stays 4×4 so it fits completely within the first 390×844 screen. The guided sample has four misplaced tiles and a true four-turn minimum. Daily and archive seeds create distinct Hamiltonian paths through all 16 tiles. The seeded depth-first generator prefers low-degree neighbors, which produces bends and straights without breaking the continuous dock-to-harbor solution. Twenty dated seeds must produce at least 12 topology signatures in the unit suite. A run ends when the route connects or its turn limit is reached.
+The board stays 4×4 so it fits completely within the first 390×844 screen. The guided sample has four marked tiles and a true four-turn minimum. Archive practice unlocks only after the current UTC daily win, then rises from 4 to 20 to 25 misplaced tiles. Daily and archive seeds create distinct Hamiltonian paths through all 16 tiles. The seeded depth-first generator prefers low-degree neighbors, which produces bends and straights without breaking the continuous dock-to-harbor solution. Twenty dated seeds must produce at least 12 topology signatures in the unit suite. A run ends when the route connects or its turn limit is reached.
 
-Win and loss use a centered paper-sheet dialog over the dark board. This is the run summary, not a toast: it names the result, reports turns, and offers a one-action replay. Browser storage restores the whole current board and reopens a completed end screen after reload.
+Win and loss use a centered paper-sheet dialog over the dark board. This is the run summary, not a toast: it names the result, reports turns, and offers a one-action replay. Browser storage keeps daily boards by date, archives by seed, and demos in a separate namespace. A daily completion marker must exactly match today’s UTC date before archive controls become available.
 
 ## Original asset plan and provenance
 

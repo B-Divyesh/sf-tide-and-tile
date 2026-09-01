@@ -1,6 +1,18 @@
 :root { color:#102a43; background:#fff9e9; font-family:Arial,sans-serif }
-body { margin:0; display:grid; min-height:100vh; place-items:center; padding:24px }
-main { max-width:520px; border:4px solid #102a43; padding:32px; box-shadow:10px 10px #c4473d }
+* { box-sizing:border-box }
+body { margin:0; min-width:320px; min-height:100vh; display:flex; flex-direction:column }
+header,footer { border-bottom:4px solid #102a43; padding:12px clamp(16px,4vw,64px); background:#d7f1f5; display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap }
+footer { border-top:4px solid #102a43; border-bottom:0; font-size:.92rem }
+footer p { margin:0 }
+nav { display:flex; gap:12px }
+.wordmark { font:900 1.2rem/1 'Arial Black',Arial,sans-serif; text-decoration:none }
+.wordmark i { color:#c4473d; font-style:normal }
+header a,footer a { display:inline-flex; min-width:44px; min-height:44px; align-items:center; justify-content:center }
+.skip { position:absolute; top:-60px; left:8px; z-index:2; background:#fff9e9; padding:10px }
+.skip:focus { top:8px }
+main { width:min(calc(100% - 48px),520px); margin:auto; border:4px solid #102a43; padding:32px; box-shadow:10px 10px #c4473d }
 h1 { font:900 clamp(2.3rem,8vw,3rem)/1 Arial,sans-serif }
-a { display:inline-block; min-height:44px; padding:10px 12px; background:#f4c95d; border:3px solid #102a43; color:#102a43; font-weight:bold }
+a { color:#102a43; text-underline-offset:3px }
+.button { display:inline-flex; min-width:44px; min-height:44px; align-items:center; padding:10px 12px; background:#f4c95d; border:3px solid #102a43; font-weight:bold }
 a:focus-visible { outline:4px solid #c4473d; outline-offset:4px }
+@media(max-width:480px) { header { align-items:flex-start } nav { width:100%; justify-content:space-between } main { margin:32px auto; padding:22px } }

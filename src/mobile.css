@@ -2,7 +2,7 @@
   header { height:60px; min-height:60px; padding:7px 12px; align-items:center; flex-direction:row; gap:8px }
   .wordmark { font-size:17px; white-space:nowrap }
   nav { width:auto; gap:12px; font-size:.88rem; justify-content:flex-end }
-  nav a[href="#archive"] { display:none }
+  nav a[href="/#archive"] { display:none }
   main { padding:10px 12px 42px }
   .hero { display:block; padding-bottom:10px }
   .hero figure { display:none }

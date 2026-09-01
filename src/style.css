@@ -16,6 +16,7 @@ header { height:72px; border-bottom:4px solid var(--ink); display:flex; align-it
 .wordmark { font-family:'Arial Black',Arial,sans-serif; font-size:clamp(18px,2vw,27px); font-weight:900; text-decoration:none; letter-spacing:-1px }
 .wordmark i { font-style:normal; color:var(--signal) }
 nav { display:flex; gap:clamp(10px,3vw,28px); font-weight:800 }
+header nav a,header .wordmark,footer a { display:inline-flex; min-width:44px; min-height:44px; align-items:center; justify-content:center }
 main { max-width:1200px; margin:auto; padding:clamp(28px,5vw,76px) clamp(16px,4vw,42px) }
 .hero { display:grid; grid-template-columns:minmax(0,1fr) minmax(270px,.9fr); gap:clamp(24px,5vw,64px); align-items:center; border-bottom:4px solid var(--ink); padding-bottom:48px }
 .eyebrow { font-size:.78rem; font-weight:900; letter-spacing:.12em; margin:0 0 8px; color:var(--signal) }
@@ -45,12 +46,15 @@ figcaption { color:#fff; padding:7px 10px; font-weight:800 }
 .tile:disabled { opacity:1; cursor:default }
 .tile.dock { border-color:var(--foam) }
 .tile.harbor { border-color:var(--signal) }
+.tile.misplaced::before { content:'TURN'; position:absolute; z-index:1; top:3px; right:3px; padding:2px 4px; background:var(--signal); color:#fff; font-size:clamp(.42rem,1.2vw,.62rem); font-weight:900; line-height:1.2 }
 .tile svg { width:100%; height:100%; transition:transform .18s ease }
 .tile.rotation-0 svg { transform:rotate(0) }
 .tile.rotation-1 svg { transform:rotate(90deg) }
 .tile.rotation-2 svg { transform:rotate(180deg) }
 .tile.rotation-3 svg { transform:rotate(270deg) }
 .channel { fill:none; stroke:var(--water); stroke-width:27; stroke-linecap:square }
+.board.connected .channel { stroke-dasharray:150; animation:harbor-flow .42s ease-out both }
+@keyframes harbor-flow { from { stroke-dashoffset:150 } to { stroke-dashoffset:0 } }
 .port-label { position:absolute; left:3px; bottom:2px; padding:1px 3px; background:var(--ink); color:#fff; font-size:clamp(.42rem,1.4vw,.65rem); letter-spacing:.05em; line-height:1.2 }
 .game-actions { display:flex; gap:14px; justify-content:center; flex-wrap:wrap }
 .game-actions button { background:var(--tile) }
