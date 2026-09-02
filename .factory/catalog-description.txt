@@ -1,1 +1,1 @@
-Rotate a 4×4 grid to connect today’s harbor route in a calm daily browser puzzle.
+Rotate water tiles into one continuous harbor route, then return for a new daily board.

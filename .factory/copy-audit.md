@@ -2,6 +2,12 @@
 
 Words and numbers count as tokens. No sentence exceeds 22 words. No sentence contains a banned marketing word.
 
+## Catalog description
+
+| Sentence | Words | Status |
+| --- | ---: | --- |
+| Rotate water tiles into one continuous harbor route, then return for a new daily board. | 15 | pass; verb-first and under 120 characters |
+
 ## Landing page and game labels
 
 | Sentence or label | Words | Status |
