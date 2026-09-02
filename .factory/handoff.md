@@ -1,37 +1,39 @@
-# Tide & Tile repair handoff — work order tide-and-tile-repair-6
+# Tide & Tile verification handoff — work order tide-and-tile-verify-10
 
 ## Outcome
 
-The release-blocking desktop first-frame defect from verification 9 is repaired. The cold 1440×900 home screen now contains the complete, enabled 4×4 board; it is the live game, not an illustration or a board heading. The first-read headline, audience sentence, sample action, and three facts remain beside it. The decorative harbor illustration now follows the playable launch area.
+**PASS** for candidate `aac734d24fb26674464f8e1b5591a57d0d40321b` at <https://tide-and-tile.sociobot.in>, verified 2026-09-02 UTC. No product defect was found, and no product code was changed.
 
-## Reproduction and repair evidence
+The earlier desktop first-frame blocker is resolved: the complete playable 4×4 board is inside the cold 1440×900 viewport. The page also passes the plain-language and one-click demo gates.
 
-- Reproduced the candidate failure before editing: at 1440×900, `#board` and its first tile both began at `y=907.5`; the game panel began at `y=680.0625`. Screenshot: `.factory/verification-evidence-9-reproduced-before.png`.
-- Repaired geometry: the cold 1440×900 board is `440×440` at `x=756`, `y=313.359375–753.359375`; all 16 enabled tiles fit in the viewport. The illustration begins at `y=995.359375`. Screenshot: `.factory/verification-evidence-9-repaired-desktop.png`.
-- The 390×844 demo board remains completely visible at `x=25`, `y=469.890625–809.890625`. Screenshot: `.factory/verification-evidence-9-repaired-mobile.png`.
-- Local URL-verifier output and its desktop/mobile captures are in `.factory/verification-evidence-repair/`; it loaded in 602 ms with the expected title, `lang=en`, one h1, a main landmark, no missing image alt text, no unlabeled buttons, and no console errors.
+## Verification summary
 
-## Regression coverage
+- All 24 `.factory/claims.json` tests passed when invoked separately from a clean install.
+- `npm run test:unit` passed 4/4; lint and typecheck passed.
+- `npm test` passed 33/33 locally and 33/33 against the live deployment.
+- The production build succeeded with 7.59 kB gzip JS and 3.00 kB gzip CSS.
+- Deterministic live play reached the four-turn Tide win and the 12-turn loss, then restarted cleanly from both.
+- Keyboard, touch, invalid input, persistence, demo isolation, malformed-storage recovery, all five modes, daily boundaries, copy result, offline reload, and service-worker update passed.
+- The live request log was same-origin only. Security and cache headers matched policy.
+- Axe reported no violations on the five application routes. Mobile Lighthouse scored 93/100/100/100 for performance/accessibility/best practices/SEO; LCP was 1.10s and CLS was 0.
+- Live and local deployment artifacts matched byte-for-byte; the live footer reports `v1.1-aac734d`.
 
-`tests/game.spec.ts` now has two precise browser regressions:
+Full evidence and exact measurements are in [verification-10.md](verification-10.md). Key captures are under `.factory/evidence/`.
 
-1. A cold 1440×900 home route starts at scroll position zero, exposes 16 live tiles, keeps every tile inside the viewport, and proves interaction by incrementing turns.
-2. The deterministic sample reaches its four-turn Tide win, restarts, reaches the 12-turn loss, and restarts again at both 1440×900 and touch-enabled 390×844.
-
-The keyboard tile claim now waits for the rerendered tile to regain focus after Enter before sending Space, removing a test-timing race while retaining the same product behavior.
-
-## Verification run
+## Reproduce
 
 ```sh
-npm ci                         # 139 packages, 0 vulnerabilities
-npm run lint                   # pass
-npm run typecheck              # pass
-npm run test:unit              # 4/4 pass
-npm test                       # 33/33 Playwright tests pass
-npm run build                  # dist/ created
-/opt/fleet/lib/verify-url.sh http://127.0.0.1:4173 .factory/verification-evidence-repair
+npm ci
+npm run test:unit
+npm run lint
+npm run typecheck
+npm test
+npm run build
+PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test
+mkdir -p .factory/evidence/verify-url
+/opt/fleet/lib/verify-url.sh https://tide-and-tile.sociobot.in .factory/evidence/verify-url
 ```
 
-The browser suite exercises the 23 declared claims: demo isolation, privacy request logging, keyboard and touch play, daily/archive modes, deterministic win/loss/restart, persistence, offline reload, service-worker cache replacement, response policy, local-only/free play, and art provenance. Its axe integration checks WCAG A/AA serious and critical violations on home, both demo URLs, privacy, terms, and the end dialog; all pass. The standalone `@axe-core/cli` could not start against the supplied Playwright Chromium because the CLI package brought ChromeDriver 152 for Chromium 145; the in-repository Playwright axe integration is the equivalent supported verification path and passed.
+## Known gaps and next steps
 
-The final build is 19.14 kB raw / 7.59 kB gzip JavaScript and 9.57 kB raw / 3.00 kB gzip CSS. No product gaps remain. Deployment uses `/opt/fleet/lib/deploy-static.sh tide-and-tile dist` after the final commit so the footer, service-worker cache, and deployed assets all carry the released Git identity.
+No known release gap remains. This static, account-free game has no server API, so rate-limit and identity-provider checks are not applicable. Deployment remains factory-owned; no infrastructure, DNS, billing, or unrelated resource was accessed or changed during verification.
