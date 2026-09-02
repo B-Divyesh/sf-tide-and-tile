@@ -1,34 +1,17 @@
-# Tide & Tile verification 5 handoff — PASS
+# Review 1 handoff — Tide & Tile
 
 ## Outcome
 
-Candidate `708d4e832573e9be954a62496ec0a75148d4343e` passes independent product QA at https://tide-and-tile.sociobot.in. The live HTML, JavaScript, CSS, service worker, and footer build identity match the candidate. No product code was changed.
+Independent first-read review completed with **FAIL**. No product code was changed. The full report is in `.factory/review-1.md`.
 
-## What was verified
+## Verification performed
 
-- All 20 exact commands in `.factory/claims.json` passed before normal QA.
-- Clean local gates passed: unit 4/4, lint, type-check, browser 27/27, and production build.
-- The same browser suite passed 27/27 against the live URL.
-- The cold 390 px screen explains what to play, who it is for, and what to click; it shows the live game and offers the sample in one click.
-- Deterministic sample play reached the four-turn win screen; wrong turns reached the 12-turn loss screen; both restarted cleanly.
-- Daily/archive boundaries, three lessons, five modes, storage isolation, persisted progress/settings, keyboard/touch input, and copy output passed.
-- Live requests stayed same-origin. Security and cache headers, offline reload, worker cache replacement, reduced motion, axe, links, 404, and metadata passed.
-- Mobile 4×-CPU measurement was 60.00 fps with 16.8 ms p95. Lighthouse scored 99 Performance, 100 Accessibility, 100 Best Practices, and 100 SEO.
+- Opened the live landing page in fresh 390 × 844 and desktop browser contexts, then opened `/demo`.
+- Confirmed the demo board/banner, same-origin live request log, real/demo storage isolation coverage, mobile board bounds, route/404 behavior, and internal-link responses.
+- Ran all 20 exact commands in `.factory/claims.json` separately after `npm ci`; all passed.
+- Ran `npm run test:unit` (4/4), `npm run lint`, `npm run typecheck`, `npm test` (27/27), and `npm run build`; all passed locally.
+- Ran the repository’s live build-identity test. It failed because live identifies `v1.1-708d4e8` while the supplied branch is `966ff8f`.
 
-## How to rerun
+## Remaining work
 
-```sh
-npm ci
-npm run test:unit
-npm run lint
-npm run typecheck
-npm test
-npm run build
-PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test
-```
-
-The detailed decision and hashes are in `.factory/verification-5.md`. Screenshots, Lighthouse JSON, and factory URL-verifier output are in `.factory/evidence/verification-5-live/`.
-
-## Known gaps and next steps
-
-No release-blocking, major, or minor defect was found. This static product has no server endpoint, sign-in, billing, or server-held data, so rate-limit, Entra, and backend checks are not applicable. No follow-up is required for acceptance.
+Resolve F-1-1 through F-1-7 in `.factory/review-1.md`: deploy the supplied revision or align identities, add/remove the three unlisted visitor claims, and repair the plain-language/control-label issues. No infrastructure or external resources were changed.
