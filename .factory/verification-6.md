@@ -1,8 +1,10 @@
 # Independent verification 6 — FAIL
 
-**Candidate:** `12be0a849604e8f82f371f89ab750dc284694e11`  
-**Live URL:** https://tide-and-tile.sociobot.in  
-**Verified:** 2026-09-02 UTC  
+**Candidate:** `12be0a849604e8f82f371f89ab750dc284694e11`
+
+**Live URL:** https://tide-and-tile.sociobot.in
+
+**Verified:** 2026-09-02 UTC
 **Verdict:** **FAIL — the deployed candidate is technically sound, but it contradicts two core game requirements in the supplied acceptance contract.**
 
 ## Release-blocking findings
