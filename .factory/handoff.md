@@ -1,8 +1,14 @@
-# Tide & Tile repair 5 handoff
+# Tide & Tile handoff — independent verification 7
 
 ## Outcome
 
-Release blockers F6-1, F6-2, and F6-3 are repaired and deployed at <https://tide-and-tile.sociobot.in>. The implementation commit is `2995dfcc6d5fd6e8c41e85336ebcae31f56156f5`; the final evidence/handoff commit is also built and deployed so the live footer identifies repository HEAD.
+**PASS.** Candidate `b26430f461cbeb069711b3c3527478b8d44eec11` was independently verified at <https://tide-and-tile.sociobot.in> on 2026-09-02 UTC. No Critical, Major, or Minor defects remain.
+
+The live hashed JavaScript and service worker byte-match the candidate build. The full local suite and the full live suite pass (unit 4/4; Playwright 31/31 in each), as do all 24 separately executed claim commands. The cold screen names the game, audience, and first action; the one-click demo opens a playable 16-tile sample with isolated storage. An independent live script reached both actual end dialogs, restarted from each, and rechecked keyboard tile control, mobile layout, privacy request capture, headers, axe, offline reload, and route behavior. Fresh live mobile Lighthouse measured Performance 99 and Accessibility 100 (FCP 1.0 s, LCP 1.2 s, CLS 0, 69 KiB transfer).
+
+Complete evidence and exact commands are in `.factory/verification-7.md` and `.factory/verification-evidence-7/`.
+
+## Previous repair context
 
 ## Repairs
 

@@ -1,0 +1,108 @@
+{
+  "base": "https://tide-and-tile.sociobot.in",
+  "started": "2026-09-02T03:54:33.812Z",
+  "checks": {
+    "homeStatus": 200,
+    "title": "Tide & Tile — Make a daily harbor route",
+    "h1": [
+      "Make today’s harbor route"
+    ],
+    "firstRead": "DAILY HARBOR PUZZLE\n\nMake today’s harbor route\n\nFor casual players who want a calm 2–5-minute puzzle break with clear rules.\n\nTry it with sample data\nLoads a guided board. It does not change your daily progress.\nFree to play\nWorks offline after the first visit\nProgress stays in this browser’s storage\nFour tiles need one turn in the sample.\n\nTODAY’S BOARD\n\nToday’s tide\n\nBoard ID: 2026-09-02 (UTC)\n\nTurns 0 / 12\nFewest 4\nSound: on\nTurn sound off\n\nStart with the four marked tiles. Turn each blue channel toward the next tile.\n\nHARBOR\nDOCK\nRestart this board\nShow the next rule\nCopy result\n\nTHREE PRACTICE ROUTES\n\nArchive boards\n\nPractice three routes at any time. They rise from 4 to 25 misplaced tiles.\n\nPlay the 4-turn guided route\nDock lesson\nPractice 20-turn corners\nBreakwater bend\nPlay the 25-turn scramble\nHarbor circuit\nHow to play Tide & Tile\nTurn a tile by tapping it or pressing Enter or Space.\nJoin every channel into one continuous route.\nFinish near the fewest turns to earn a medal.\n\nWhat it does not do: there are no timers, lives, accounts, or leaderboards. The turn limit gives each route a clear finish.",
+    "demoAction": 1,
+    "boardTiles": 16,
+    "demoUrl": "https://tide-and-tile.sociobot.in/?demo=1",
+    "demoBanner": "Demo — sample data, nothing is saved\nReset demo\nStart for real",
+    "winDialog": "ROUTE COMPLETE\n\nThe harbor is connected\n\nTide medal. 4 turns; fewest is 4.\n\nBest for this board: 4 turns.\n\nPlay this route again\nCopy result",
+    "turns": "4",
+    "lossDialog": "TURN LIMIT REACHED\n\nThe route stayed open\n\nYou used 12 turns. This board allows 12.\n\nRestart the same route and turn only the misplaced tiles.\n\nTry this route again",
+    "lossRestartTurns": "0",
+    "keyboard": {
+      "before": "Row 1, column 1: corner water channel joining north and east. Press to rotate.",
+      "after": "Row 1, column 1: corner water channel joining east and south. Press to rotate.",
+      "secondFocused": false
+    },
+    "sameOriginRequests": true,
+    "requestOrigins": [
+      "https://tide-and-tile.sociobot.in"
+    ],
+    "mobile": {
+      "tiles": 16,
+      "board": {
+        "x": 25,
+        "y": 449.890625,
+        "width": 340,
+        "height": 340
+      },
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "minTarget": 0,
+      "reduced": true,
+      "errors": []
+    },
+    "axe": []
+  },
+  "console": [],
+  "pageErrors": [],
+  "requests": [
+    "https://tide-and-tile.sociobot.in/",
+    "https://tide-and-tile.sociobot.in/assets/index-1ESUAq6t.js",
+    "https://tide-and-tile.sociobot.in/assets/index-arkqJv9f.css",
+    "https://tide-and-tile.sociobot.in/harbor-table.webp",
+    "https://tide-and-tile.sociobot.in/harbor-table.webp"
+  ],
+  "headers": {
+    "home": {
+      "cache-control": "no-cache, must-revalidate",
+      "content-encoding": "br",
+      "content-security-policy": "default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+      "content-type": "text/html",
+      "date": "Wed, 02 Sep 2026 03:54:33 GMT",
+      "etag": "\"75724325\"",
+      "last-modified": "Wed, 02 Sep 2026 03:36:39 GMT",
+      "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+      "vary": "Accept-Encoding",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-xss-protection": "1; mode=block"
+    },
+    "asset": {
+      "content-type": "text/javascript",
+      "date": "Wed, 02 Sep 2026 03:54:35 GMT",
+      "cache-control": "public, max-age=31536000, immutable",
+      "content-encoding": "br",
+      "etag": "\"75724325\"",
+      "last-modified": "Wed, 02 Sep 2026 03:36:39 GMT",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding",
+      "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "x-dns-prefetch-control": "off",
+      "content-security-policy": "default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+      "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()"
+    },
+    "sw": {
+      "content-type": "text/javascript",
+      "date": "Wed, 02 Sep 2026 03:54:36 GMT",
+      "cache-control": "no-cache, no-store, must-revalidate",
+      "content-encoding": "br",
+      "etag": "\"75724325\"",
+      "last-modified": "Wed, 02 Sep 2026 03:36:39 GMT",
+      "transfer-encoding": "chunked",
+      "vary": "Accept-Encoding",
+      "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "x-content-type-options": "nosniff",
+      "x-xss-protection": "1; mode=block",
+      "x-dns-prefetch-control": "off",
+      "content-security-policy": "default-src 'self'; img-src 'self'; style-src 'self'; script-src 'self'; connect-src 'self'; media-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+      "permissions-policy": "camera=(), microphone=(), geolocation=(), payment=()"
+    }
+  },
+  "finished": "2026-09-02T03:54:39.052Z"
+}
