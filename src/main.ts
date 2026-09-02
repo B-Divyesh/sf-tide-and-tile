@@ -15,6 +15,7 @@ type SavedData = {
 type BoardMode = 'daily' | 'archive' | 'demo';
 
 const app = document.querySelector<HTMLDivElement>('#app')!;
+const routeStatus = document.querySelector<HTMLParagraphElement>('#route-status')!;
 let board: Board, turns = 0, selected = 0, demo = false, muted = false, state: GameState = 'playing';
 let boardName = 'Today’s board', guided = false, tutorialStep = 0, best: Record<string, number> = {};
 let boardMode: BoardMode = 'daily', countedRealVisit = false;
@@ -136,6 +137,15 @@ function bind() {
 }
 function openEndScreen() { const dialog = document.querySelector<HTMLDialogElement>('#end-screen'); if (dialog && !dialog.open) { dialog.showModal(); document.querySelector<HTMLElement>('#end-title')?.focus(); } }
 function renderGame() { app.innerHTML = appPage(); renderBoard(); bind(); requestAnimationFrame(openEndScreen); }
+function focusAndAnnounceRoute() {
+  routeStatus.textContent = '';
+  requestAnimationFrame(() => {
+    const heading = document.querySelector<HTMLElement>('h1');
+    heading?.setAttribute('tabindex', '-1');
+    heading?.focus();
+    routeStatus.textContent = heading?.textContent?.trim() || document.title;
+  });
+}
 function renderRoute(moveFocus = false) {
   const route = path(); document.title = titleFor(route);
   const canonicalRoute = isDemoRoute() ? '/demo' : route === '/' ? '/' : route;
@@ -155,10 +165,10 @@ function renderRoute(moveFocus = false) {
       restoreOrStart(dailySeed(), 'Today’s board', visits === 0, 'daily');
     }
     renderGame();
-    if (moveFocus) requestAnimationFrame(() => { const heading = document.querySelector<HTMLElement>('h1'); heading?.setAttribute('tabindex', '-1'); heading?.focus(); });
+    if (moveFocus) focusAndAnnounceRoute();
     return;
   }
-  bind(); if (moveFocus) requestAnimationFrame(() => { const heading = document.querySelector<HTMLElement>('h1'); heading?.setAttribute('tabindex', '-1'); heading?.focus(); });
+  bind(); if (moveFocus) focusAndAnnounceRoute();
 }
 function scheduleLoop() { frameRequest = requestAnimationFrame(loop); }
 function loop(now: number) {

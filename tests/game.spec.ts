@@ -292,18 +292,37 @@ test('legal terms match MIT rights and legal Archive links return to the home ar
   await page.goto('/privacy'); const privacyArchive = page.getByRole('link', { name: 'Archive' }); await expect(privacyArchive).toHaveAttribute('href', '/#archive'); await privacyArchive.click(); await expect(page).toHaveURL('/#archive');
 });
 
-test('history navigation restores the route and moves focus to its heading', async ({ page }) => {
-  await page.goto('/'); await page.getByRole('link', { name: 'Privacy' }).first().click();
-  await expect(page).toHaveURL('/privacy'); await expect(page.getByRole('heading', { name: 'Privacy at Tide & Tile' })).toBeFocused();
-  await page.goBack(); await expect(page).toHaveURL('/'); await expect(page.getByRole('heading', { name: 'Make today’s harbor route' })).toBeFocused();
+test('history navigation keeps one polite route announcement and moves focus to its heading', async ({ page }) => {
+  await page.goto('/');
+  const routeStatus = page.locator('#route-status');
+  await expect(routeStatus).toHaveCount(1);
+  await expect(routeStatus).toHaveAttribute('aria-live', 'polite');
+  await expect(routeStatus).toHaveAttribute('aria-atomic', 'true');
+  expect(await routeStatus.evaluate(element => element.parentElement === document.body && !document.querySelector('#app')?.contains(element))).toBe(true);
+
+  await page.getByRole('link', { name: 'Privacy' }).first().click();
+  await expect(page).toHaveURL('/privacy');
+  await expect(page.getByRole('heading', { name: 'Privacy at Tide & Tile' })).toBeFocused();
+  await expect(routeStatus).toHaveText('Privacy at Tide & Tile');
+
+  await page.goBack();
+  await expect(page).toHaveURL('/');
+  await expect(page.getByRole('heading', { name: 'Make today’s harbor route' })).toBeFocused();
+  await expect(routeStatus).toHaveText('Make today’s harbor route');
   await page.goto('/missing-harbor-page'); await expect(page).toHaveTitle('Page not found — Tide & Tile');
   await expect(page.getByRole('heading', { name: 'This harbor page is missing' })).toBeVisible();
 });
 
-test('service worker precache remains below 2 MiB and omits social preview art', async ({ request }) => {
+test('service worker precache matches the built hashed assets, stays below 2 MiB, and omits social preview art', async ({ request }) => {
   const worker = await (await request.get('/sw.js')).text();
   const shell = JSON.parse(worker.match(/const SHELL=(\[[^;]+\]);/)![1]) as string[];
   expect(shell).not.toContain('/social.png');
+  const builtHtml = readFileSync('dist/index.html', 'utf8');
+  const servedHtml = await (await request.get('/')).text();
+  const hashedAssets = (html: string) => [...html.matchAll(/(?:src|href)="(\/assets\/[^"]+)"/g)].map(match => match[1]).sort();
+  const builtAssets = hashedAssets(builtHtml);
+  expect(hashedAssets(servedHtml)).toEqual(builtAssets);
+  for (const asset of builtAssets) expect(shell).toContain(asset);
   const bytes = shell.reduce((sum, url) => sum + statSync(join('dist', url)).size, 0);
   expect(bytes).toBeLessThan(2 * 1024 * 1024);
 });
@@ -331,6 +350,7 @@ test('the completed route draws once and reduced motion shortens it to an instan
 
 test('routes load without console errors and the standalone 404 keeps shared navigation and build identity', async ({ page }) => {
   const errors: string[] = []; page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); page.on('pageerror', error => errors.push(error.message));
+  const revision = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { encoding: 'utf8' }).trim();
   const routes = [
     ['/', 'Tide & Tile — Make a daily harbor route', 'https://tide-and-tile.sociobot.in/'],
     ['/?demo=1', 'Demo — Tide & Tile', 'https://tide-and-tile.sociobot.in/demo'],
@@ -342,10 +362,11 @@ test('routes load without console errors and the standalone 404 keeps shared nav
     await page.goto(route); await expect(page.locator('main')).toBeVisible(); await expect(page.locator('h1')).toHaveCount(1);
     await expect(page).toHaveTitle(title); await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical);
     await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.+/);
+    await expect(page.locator('footer')).toContainText(`v1.1-${revision}`);
   }
   await page.goto('/404.html');
-  const revision = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { encoding: 'utf8' }).trim();
   await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible(); await expect(page.locator('footer')).toContainText(`v1.1-${revision}`);
+  expect(await (await page.request.get('/404.html')).text()).toBe(readFileSync('dist/404.html', 'utf8'));
   expect(errors).toEqual([]);
 });
 

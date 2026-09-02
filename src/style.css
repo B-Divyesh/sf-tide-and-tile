@@ -5,6 +5,7 @@
 }
 * { box-sizing:border-box }
 body { margin:0; min-width:320px; background:repeating-linear-gradient(0deg,#fff9e9,#fff9e9 5px,#fff6df 6px); line-height:1.5 }
+.visually-hidden { position:absolute!important; width:1px!important; height:1px!important; padding:0!important; margin:-1px!important; overflow:hidden!important; clip:rect(0,0,0,0)!important; white-space:nowrap!important; border:0!important }
 a { color:inherit; text-decoration-thickness:2px; text-underline-offset:3px }
 button,.button { font:inherit; font-weight:800; color:var(--ink); min-height:44px; border:3px solid var(--ink); border-radius:0; background:var(--tile); box-shadow:4px 4px 0 var(--ink); cursor:pointer; padding:8px 13px; transition:transform .15s,box-shadow .15s }
 button:active,.button:active { transform:translate(3px,3px); box-shadow:1px 1px 0 var(--ink) }
