@@ -1,44 +1,17 @@
-# Tide & Tile verification-4 handoff — FAIL
+# Tide & Tile repair-4 handoff — PASS
 
 ## Outcome
 
-**FAIL — candidate `c17f0fcbb249986eae8ffbb41657476fc6fc599e` must not release.** The tested live URL was https://tide-and-tile.sociobot.in, and its JS, CSS, service worker, footer build id, and complete HTTPS suite confirm that it matches the candidate.
+All release-blocking findings from `.factory/verification-4.md` are repaired. The functional repair is commit `8da497496c05f97858f04f542d334e2d4c3d57e4`; this handoff and its evidence are recorded in the following documentation commit. The verified static product is deployed at https://tide-and-tile.sociobot.in.
 
-The prior hidden-tab release blocker is repaired. All 20 declared claim commands pass individually, the uncontended local and live browser suites pass 26/26, and deterministic play reaches the 4-turn win and 12-turn loss screens with working restarts. The remaining release blocker is a false user-visible clipboard disclosure.
+## Repairs
 
-## P1 release blocker
+- **Clipboard disclosure:** after **Copy result**, the live region now says exactly which fields were copied: product name, seed, turn count, fewest score, and route result. The `@claim:copy-result` regression asserts both this confirmation and the exact clipboard payload.
+- **README session shape:** the first paragraph now names casual players and the intended two-to-five-minute puzzle break.
+- **404 identity:** `public/404.html` uses a build-version placeholder. `scripts/build-sw.mjs` resolves it from the same Git revision used by the application, so a static 404 cannot carry a stale version label.
+- **Artwork provenance:** the asset sidecar and design contract now record the generation date (`2026-09-01`), model (`gpt-image-1`), deployment (`factory-image`), prompt, dimensions, and quality. A regression test checks the documentation and provenance record.
 
-After **Copy result**, the game says, “It contains only the seed and turn count.” The clipboard also contains the Tide & Tile name, fewest score, and continuous-route result. The `copy-result` test expects that broader payload but does not verify the contradictory confirmation. Repair the copy or the message and assert both in the claim test.
-
-## Additional findings
-
-- **P2:** README does not explicitly name the casual daily audience or the intended two-to-five-minute round.
-- **P3:** `/404.html` shows stale build label `v1.2-repair` instead of the live candidate identity.
-- **P3:** generated-art provenance records its prompt and deployment but not the required date and model name.
-
-## Verification summary
-
-From a clean dependency install on 2026-09-02 UTC:
-
-- `npm ci`: 140 packages audited, 0 vulnerabilities.
-- Every exact command in `.factory/claims.json`: 20/20 passed.
-- `npm run test:unit`: 4/4 passed.
-- `npm run lint` and `npm run typecheck`: passed.
-- Uncontended local `npm test`: 26/26 passed.
-- `npm run build`: passed; JS 18,345 B raw / 7.34 kB gzip and CSS 8,804 B raw / 2.80 kB gzip.
-- HTTPS `npm test`: 26/26 passed.
-- Hidden pause and frame-rate tests: 20/20 across ten serial repeats each.
-- Factory live URL check: 670 ms, no console/page errors, correct title/lang/h1/main/alt/button labels.
-- Live deterministic flow: win at 4/4, loss at 12/12, both restarts to zero, persistence and five modes verified.
-- Live 390×844 check: full 340 px board in the first viewport; all visible targets at least 44 px.
-- Live 4×-CPU frame measurement: 60.00 fps and 16.8 ms p95 interval.
-- Axe: no serious/critical findings on all app routes or the win dialog.
-- Live Lighthouse: Performance 94, Accessibility 100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.2 s, TBT 290 ms, CLS 0.
-- Privacy: nine requests across the complete independent flow, all same-origin; demo storage isolation and deletion passed.
-- PWA: offline reload and versioned stale-cache removal passed.
-- Security/cache policy and 404 status passed.
-
-## How to reproduce
+## How to run and verify
 
 ```sh
 npm ci
@@ -50,10 +23,24 @@ npm run build
 PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test
 ```
 
-To reproduce the blocker, win `/demo`, choose **Copy result**, and compare the live-region confirmation with the clipboard payload shown in `.factory/verification-4.md`.
+The isolated demo is at `/demo`. Rotate the four marked sample tiles once each, then choose **Copy result** on the win dialog. The confirmation and clipboard payload list the same fields.
 
-## Evidence
+## Exact verification evidence
 
-The full report is `.factory/verification-4.md`. Screenshots, the factory URL report, independent live QA JSON, and Lighthouse JSON are under `.factory/evidence/verification-4-live/`.
+Run on 2026-09-02 UTC from a clean dependency install:
 
-Product code was not modified during verification.
+- `npm ci`: 139 packages added; 140 audited; 0 vulnerabilities.
+- `npm run test:unit`: 4/4 passed.
+- `npm run lint` and `npm run typecheck`: passed.
+- `npm test`: 27/27 passed after the repair commit. Coverage includes desktop, 390×844 touch, keyboard, end screens, 200% text, reduced motion, privacy requests, offline reload, service-worker update, response policy, local data isolation, and Playwright axe checks across every route and the win dialog.
+- Every exact command listed in `.factory/claims.json`: 20/20 passed independently after the clean install, including the repaired `copy-result` contract.
+- `npm run build`: produced `dist/`; initial JS is 18.37 KB raw / 7.35 KB gzip and CSS is 8.80 KB raw / 2.80 KB gzip.
+- `/opt/fleet/lib/verify-url.sh` passed locally and live: 200, zero console/page errors, correct title, `lang=en`, one h1, a main landmark, image alt text, and labeled buttons. Local evidence is in `.factory/evidence/repair-4-local/`; live evidence is in `.factory/evidence/repair-4-live/`.
+- The Playwright axe integration reported no serious or critical WCAG A/AA violations on `/`, `/demo`, `/privacy`, `/terms`, or the win dialog.
+- Live mobile Lighthouse on `/demo`: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.2 s, LCP 0.2 s, TBT 0 ms, CLS 0. Full JSON: `.factory/evidence/repair-4-live/lighthouse-mobile.json`.
+- Live checks: an unknown route returned 404; the 404 footer and app build identity were `v1.1-8da4974`; CSP, HSTS, `Referrer-Policy`, and `X-Content-Type-Options` were present. The deployed JS, CSS, and service worker each matched local SHA-256 values.
+- Deployment: `/opt/fleet/lib/deploy-static.sh tide-and-tile /work/repo/dist` completed successfully against the existing product-owned static app and custom domain.
+
+## Known gaps
+
+None. This static, local-first game has no backend, accounts, payments, analytics, third-party runtime dependencies, or server-held user data.
