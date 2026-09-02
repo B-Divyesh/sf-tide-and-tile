@@ -146,12 +146,20 @@ test('@claim:copy-result copies only the seed, turns, fewest score, and route re
 
 test('@claim:hidden-pause pauses fixed simulation steps while the page is hidden', async ({ page }) => {
   await page.goto('/demo');
-  const hiddenStart = Number(await page.locator('body').getAttribute('data-simulation-steps'));
-  await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => true }); document.dispatchEvent(new Event('visibilitychange')); });
-  await page.waitForTimeout(350);
-  const hiddenEnd = Number(await page.locator('body').getAttribute('data-simulation-steps')); expect(hiddenEnd - hiddenStart).toBeLessThanOrEqual(2);
-  await page.evaluate(() => { Object.defineProperty(document, 'hidden', { configurable: true, get: () => false }); document.dispatchEvent(new Event('visibilitychange')); });
-  await expect.poll(async () => Number(await page.locator('body').getAttribute('data-simulation-steps'))).toBeGreaterThan(hiddenEnd);
+  const hidden = await page.evaluate(async () => {
+    let simulatedHidden = false;
+    Object.defineProperty(document, 'hidden', { configurable: true, get: () => simulatedHidden });
+    simulatedHidden = true; document.dispatchEvent(new Event('visibilitychange'));
+    const start = Number(document.body.dataset.simulationSteps || '0');
+    const simulationState = document.body.dataset.simulationState;
+    await new Promise(resolve => setTimeout(resolve, 350));
+    const end = Number(document.body.dataset.simulationSteps || '0');
+    simulatedHidden = false; document.dispatchEvent(new Event('visibilitychange'));
+    return { start, end, simulationState };
+  });
+  expect(hidden.simulationState).toBe('paused');
+  expect(hidden.end - hidden.start).toBe(0);
+  await expect.poll(async () => Number(await page.locator('body').getAttribute('data-simulation-steps'))).toBeGreaterThan(hidden.end);
 });
 
 test('@claim:frame-rate keeps the fixed game loop near 60 frames per second', async ({ page }) => {

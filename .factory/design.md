@@ -34,4 +34,4 @@ Prompt sheet: *top-down editorial illustration of a small harbor puzzle table, f
 
 ## Accessibility and performance
 
-Tiles expose textual channel descriptions and row/column labels. Water uses connection shape plus colour. Dock and harbor have text labels as well as separate outlines. Controls are at least 44px. Game code is plain DOM/SVG and TypeScript; the illustration remains under 300 KB. The fixed 60 Hz loop pauses in hidden tabs and clamps stalls. Local-only settings and progress are namespaced by real/demo mode.
+Tiles expose textual channel descriptions and row/column labels. Water uses connection shape plus colour. Dock and harbor have text labels as well as separate outlines. Controls are at least 44px. Game code is plain DOM/SVG and TypeScript; the illustration remains under 300 KB. The fixed 60 Hz loop pauses in hidden tabs: it cancels its queued frame and runs zero steps until the tab is visible again, then clamps stalls. Local-only settings and progress are namespaced by real/demo mode.

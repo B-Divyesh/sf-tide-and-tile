@@ -1,53 +1,20 @@
-# Tide & Tile verification-3 handoff — FAIL
-
-## Independent verification outcome (2026-09-02 UTC)
-
-**FAIL — candidate `fcdadfe9743252b211a2a677a885fc94cf06f361` must not release.** The live URL tested was https://tide-and-tile.sociobot.in and its app asset is byte-identical to the candidate build.
-
-### P0 release blocker
-
-The declared `hidden-pause` claim test is flaky. Its mandatory command, `npm test -- --grep @claim:hidden-pause`, failed in the all-claims run (hidden simulation advanced 4 steps; allowed ≤2) and again in full `npm test` (advanced 6; 25/26 tests passed). A later isolated retry passed, proving nondeterminism rather than a reliable fix. Any failed claim test blocks acceptance.
-
-All other independent QA passed: 19/20 listed claims, lint, typecheck, unit tests (4/4), production build, live deterministic win/loss/restart flow, 390px touch, keyboard, reduced motion, offline reload, same-origin-only request capture, zero console/page errors, live headers/caching, and no serious/critical axe findings. Live Lighthouse: Performance 99, Accessibility 100, Best Practices 100, SEO 100; FCP 1.0 s, LCP 1.3 s, TBT 130 ms, CLS 0.
-
-Re-run every claim from a clean `npm ci` and the full suite after making the hidden-tab test and/or simulation behavior deterministic. Full evidence is in `.factory/verification-3.md`.
-
----
-
-# Tide & Tile repair handoff (superseded by verification-3 FAIL above)
+# Tide & Tile repair handoff
 
 ## Outcome
 
-Release-blocking findings from independent verification commit `a5643ddff14426fe542fb40b6d3843162c0dfb76` have been repaired without changing the static browser-game deployment class. The failure was reproduced before implementation: the focused regression run failed daily/archive isolation, the UTC archive gate, three-stage onboarding, MIT terms, legal archive navigation, and the precache budget.
+Repaired the release-blocking `hidden-pause` claim reported in verification-3 while preserving the static browser-game, its daily/archive/demo storage boundaries, and the complete title-to-win/loss/restart game path.
 
-## Repairs
+## Root cause and repair
 
-- Daily games are stored by UTC date, archive games by seed, and demos under the separate `demo:` key. `/` always selects the current UTC date. Legacy current-board data is restored only when its seed matches the requested board.
-- Archive practice requires `completedDailyUtc` to exactly equal today’s UTC seed. Finishing a demo cannot set it. A visible action returns from an archive to today.
-- The first three real visits teach marked tiles, matching shared edges, and the full dock-to-harbor goal. Later visits show the standard keyboard instruction.
-- Archive guidance now reports the board’s actual misplaced-tile count. Difficulty rises from 4 to 20 to 25 turns.
-- Claims now cover the daily boundary, UTC gate, onboarding, clipboard result, hidden-tab pause, mobile controls, all five route signatures, Space input, and protection of pre-existing real data. A manifest test requires exactly one tagged regression per claim.
-- Every visible mobile link and control is at least 44×44 CSS pixels. The complete board remains in the first 390×844 demo viewport and works with touch.
-- Terms now state the MIT rights accurately. Archive links on Privacy and Terms lead to `/#archive`.
-- `social.png` remains available for social cards but is no longer precached. The install shell fell from 2,145,482 bytes to 149,011 bytes.
-- The shared 404 now includes navigation, legal links, the product description, and a build identity.
-- Completed channels draw once over 420 ms. Reduced-motion mode makes the draw effectively instant.
-- ESLint and a separate TypeScript check are now first-class package scripts.
+The old loop continued to schedule `requestAnimationFrame` while hidden. Its claim test took the first sample before its synthetic hidden transition, so a queued frame could be counted as hidden progress. A 24-repeat clean-install reproduction of the prior candidate failed twice (repeats 13 and 22), matching the verifier's intermittent over-allowance finding.
 
-## Regression coverage
+`src/main.ts` now tracks the one queued frame. A hidden transition cancels it, clears fixed-step lag, marks the simulation paused, and does not schedule another frame. Visibility return clears elapsed time and schedules exactly one new frame. The documented contract is now zero simulation steps while hidden; elapsed time is discarded before resuming.
 
-The exact verifier failure paths live in `tests/game.spec.ts`:
+The tagged Playwright regression dispatches the visibility transition and records the step count in one page task, waits 350 ms, requires exactly zero hidden steps, verifies the paused state, and verifies resumed progress. It passed 12 consecutive isolated repeats after the repair.
 
-- `@claim:daily-boundary`: archive progress survives independently, reload returns to today, and a prior-date legacy record cannot replace today.
-- `@claim:archive-gate`: archives start disabled, unlock only after today’s win, show accurate 4/20/25 guidance, and relock for a stale marker.
-- `@claim:progressive-lessons`: four visits produce three distinct lessons and then the standard instruction.
-- `@claim:demo-sandbox`: seeded real data is unchanged and demo data is removed on exit.
-- `@claim:keyboard-tiles`, `@claim:advertised-modes`, and `@claim:copy-result`: Space, all five route signatures, and exact clipboard output are asserted.
-- Additional checks cover 44 px mobile targets, 200% text, MIT text and legal links, sub-2 MiB precache, all routes plus the end dialog in axe, console errors, shared 404 structure, and the 420 ms/reduced-motion route draw.
+## Verification
 
-## Verification evidence
-
-Run from a clean dependency install on 2026-09-01 UTC:
+Run from a fresh dependency install:
 
 ```sh
 npm ci
@@ -58,26 +25,24 @@ npm test
 npm run build
 ```
 
-Results:
+Results on 2026-09-02 UTC:
 
 - `npm ci`: 140 packages audited, 0 vulnerabilities.
-- Unit: 4/4 passed.
-- Lint: passed with ESLint 10.9.1 and typescript-eslint 8.69.0.
-- TypeScript: passed with `tsc --noEmit`.
-- Browser integration: 26/26 passed on desktop and a 390×844 touch context.
-- Every command in `.factory/claims.json` was run separately: 20/20 passed.
-- Axe: no serious or critical WCAG A/AA findings on `/`, `/demo`, `/privacy`, `/terms`, or the completed-run dialog.
-- Local factory URL check: correct title, language, one h1, main landmark, alt text, and zero console errors.
-- Mobile Lighthouse on `/demo`: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.6 s, TBT 0 ms, CLS 0.
-- Production sizes: JS 18,034 bytes raw / 7.26 kB gzip; CSS 8,804 bytes raw / 2.80 kB gzip; hero WebP 58,118 bytes; service-worker precache 149,011 bytes.
-- Visual evidence: `.factory/evidence/repair-2/demo-desktop.png`, `demo-mobile.png`, and `win-desktop.png`. Lighthouse and factory URL reports are in the same directory.
+- Unit tests: 4/4 passed.
+- ESLint and `tsc --noEmit`: passed.
+- Full Playwright suite: 26/26 passed, including desktop/mobile, keyboard, end screens, touch at 390×844, axe serious/critical checks, privacy request capture, offline reload, service-worker update, and response-policy coverage.
+- Every one of the 20 exact commands in `.factory/claims.json` passed individually. The procedural-route claim correctly ran through Vitest; all other claim commands built the production artifact and ran Playwright.
+- `npm run build`: passed and produced `dist/`. The initial JavaScript is 18,345 bytes raw / 7,323 bytes gzip; CSS is 8,804 bytes raw / 2,807 bytes gzip.
+- `/opt/fleet/lib/verify-url.sh http://127.0.0.1:4173 .factory/evidence/repair-3-local`: passed with a 558 ms local load, zero console/page errors, title, `lang=en`, one h1, a main landmark, no missing image alt text, and no unlabeled buttons.
 
-## Deployment and live checks
+## Deployment and live verification
 
-The production build was deployed through `/opt/fleet/lib/deploy-static.sh tide-and-tile /work/repo/dist`, which reused only `sf-tide-and-tile` in resource group `sociobot` and the `tide-and-tile.sociobot.in` DNS record. Azure deployment ID: `5b28daf1-86e3-48a1-8c21-f60fe122e44d`.
+The final committed `dist/` was deployed with `/opt/fleet/lib/deploy-static.sh tide-and-tile /work/repo/dist`, reusing only `sf-tide-and-tile` in resource group `sociobot` and `tide-and-tile.sociobot.in`.
 
-`https://tide-and-tile.sociobot.in` returned 200 over managed TLS. The live factory URL check reported a 696 ms load, no console errors, correct title/lang/main/h1/alt/button labels, and the unknown-route check returned HTTP 404. Live responses include the strict CSP, HSTS, `X-Content-Type-Options`, `Referrer-Policy`, and `Permissions-Policy`; HTML is uncached, the worker is no-store, and hashed assets are immutable. Local and live SHA-256 hashes matched for JS, CSS, `sw.js`, and `harbor-table.webp` after deployment.
+`/opt/fleet/lib/verify-url.sh https://tide-and-tile.sociobot.in …` passed: 200 response, 730 ms load, zero console/page errors, title, `lang=en`, one h1, main landmark, image alt text, and button labels. `/`, `/demo`, `/privacy`, and `/terms` returned 200; an unknown route returned 404. The live JavaScript SHA-256 matched the locally built asset. The complete Playwright suite also passed 26/26 against the HTTPS URL, including the final demo win/loss/restart flow, 390px touch flow, keyboard, axe, privacy, offline/update, and headers/caching assertions.
+
+Live mobile Lighthouse on `/demo`: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.1 s, TBT 10 ms, CLS 0.
 
 ## Known gaps
 
-No release-blocking gaps are known. Lighthouse did not produce an INP value because the lab run had no measured interaction; the scripted 4× CPU run still met the 60 fps claim. This product has no backend, account, payment, analytics, multiplayer, or runtime AI dependency, so backend health, rate limiting, Entra, billing, and model-gateway checks do not apply.
+None. The game has no backend, accounts, payments, analytics, or third-party runtime dependencies.

@@ -19,7 +19,8 @@ const app = document.querySelector<HTMLDivElement>('#app')!;
 let board: Board, turns = 0, selected = 0, demo = false, muted = false, state: GameState = 'playing';
 let boardName = 'Today’s tide', guided = false, tutorialStep = 0, best: Record<string, number> = {};
 let boardMode: BoardMode = 'daily', completedDailyUtc = '', countedRealVisit = false;
-let running = true, last = performance.now(), lag = 0, simulationSteps = 0;
+const FIXED_STEP_MS = 1000 / 60;
+let last = performance.now(), lag = 0, simulationSteps = 0, frameRequest: number | undefined;
 const escapeHtml = (value: string) => value.replace(/[&<>\"]/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '\"': '&quot;' }[character]!));
 const path = () => location.pathname.replace(/\/$/, '') || '/';
 const storageKey = () => `${demo ? 'demo:' : 'tide:'}tide-and-tile`;
@@ -154,11 +155,30 @@ function renderRoute(moveFocus = false) {
   }
   bind(); if (moveFocus) requestAnimationFrame(() => { const heading = document.querySelector<HTMLElement>('h1'); heading?.setAttribute('tabindex', '-1'); heading?.focus(); });
 }
+function scheduleLoop() { frameRequest = requestAnimationFrame(loop); }
 function loop(now: number) {
-  if (running) { lag += Math.min(100, now - last); while (lag >= 1000 / 60) { lag -= 1000 / 60; simulationSteps++; document.body.dataset.simulationSteps = String(simulationSteps); } }
-  last = now; requestAnimationFrame(loop);
+  frameRequest = undefined;
+  if (document.hidden) {
+    // A queued frame can arrive just as the browser hides the tab. Do not
+    // consume either that frame or any elapsed time when this happens.
+    lag = 0; last = now; document.body.dataset.simulationState = 'paused';
+    return;
+  }
+  document.body.dataset.simulationState = 'running';
+  lag += Math.min(100, now - last);
+  while (lag >= FIXED_STEP_MS) { lag -= FIXED_STEP_MS; simulationSteps++; document.body.dataset.simulationSteps = String(simulationSteps); }
+  last = now; scheduleLoop();
 }
-document.addEventListener('visibilitychange', () => { running = !document.hidden; last = performance.now(); });
+document.addEventListener('visibilitychange', () => {
+  lag = 0; last = performance.now();
+  if (document.hidden) {
+    if (frameRequest !== undefined) cancelAnimationFrame(frameRequest);
+    frameRequest = undefined; document.body.dataset.simulationState = 'paused';
+    return;
+  }
+  document.body.dataset.simulationState = 'running';
+  if (frameRequest === undefined) scheduleLoop();
+});
 window.addEventListener('popstate', () => renderRoute(true));
-renderRoute(); requestAnimationFrame(loop);
+renderRoute(); scheduleLoop();
 if ('serviceWorker' in navigator) window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' }).then(registration => registration.update()).catch(() => {}));

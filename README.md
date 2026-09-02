@@ -35,7 +35,7 @@ The unit suite checks route connectivity, the exact four-turn sample, determinis
 - Copy result includes only the seed, turns, fewest score, and route result.
 - The full board fits at 390px, and touch controls are at least 44px.
 - Play is free. There are no accounts, payments, analytics, timers, lives, or leaderboards.
-- The fixed-step game loop targets 60 frames per second and pauses in hidden tabs.
+- The fixed-step game loop targets 60 frames per second. A hidden tab runs zero simulation steps and discards elapsed time before it resumes.
 
 ## Deploy
 
