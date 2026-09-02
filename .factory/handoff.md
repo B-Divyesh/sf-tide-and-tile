@@ -1,20 +1,44 @@
-# Tide & Tile repair handoff
+# Tide & Tile verification-4 handoff — FAIL
 
 ## Outcome
 
-Repaired the release-blocking `hidden-pause` claim reported in verification-3 while preserving the static browser-game, its daily/archive/demo storage boundaries, and the complete title-to-win/loss/restart game path.
+**FAIL — candidate `c17f0fcbb249986eae8ffbb41657476fc6fc599e` must not release.** The tested live URL was https://tide-and-tile.sociobot.in, and its JS, CSS, service worker, footer build id, and complete HTTPS suite confirm that it matches the candidate.
 
-## Root cause and repair
+The prior hidden-tab release blocker is repaired. All 20 declared claim commands pass individually, the uncontended local and live browser suites pass 26/26, and deterministic play reaches the 4-turn win and 12-turn loss screens with working restarts. The remaining release blocker is a false user-visible clipboard disclosure.
 
-The old loop continued to schedule `requestAnimationFrame` while hidden. Its claim test took the first sample before its synthetic hidden transition, so a queued frame could be counted as hidden progress. A 24-repeat clean-install reproduction of the prior candidate failed twice (repeats 13 and 22), matching the verifier's intermittent over-allowance finding.
+## P1 release blocker
 
-`src/main.ts` now tracks the one queued frame. A hidden transition cancels it, clears fixed-step lag, marks the simulation paused, and does not schedule another frame. Visibility return clears elapsed time and schedules exactly one new frame. The documented contract is now zero simulation steps while hidden; elapsed time is discarded before resuming.
+After **Copy result**, the game says, “It contains only the seed and turn count.” The clipboard also contains the Tide & Tile name, fewest score, and continuous-route result. The `copy-result` test expects that broader payload but does not verify the contradictory confirmation. Repair the copy or the message and assert both in the claim test.
 
-The tagged Playwright regression dispatches the visibility transition and records the step count in one page task, waits 350 ms, requires exactly zero hidden steps, verifies the paused state, and verifies resumed progress. It passed 12 consecutive isolated repeats after the repair.
+## Additional findings
 
-## Verification
+- **P2:** README does not explicitly name the casual daily audience or the intended two-to-five-minute round.
+- **P3:** `/404.html` shows stale build label `v1.2-repair` instead of the live candidate identity.
+- **P3:** generated-art provenance records its prompt and deployment but not the required date and model name.
 
-Run from a fresh dependency install:
+## Verification summary
+
+From a clean dependency install on 2026-09-02 UTC:
+
+- `npm ci`: 140 packages audited, 0 vulnerabilities.
+- Every exact command in `.factory/claims.json`: 20/20 passed.
+- `npm run test:unit`: 4/4 passed.
+- `npm run lint` and `npm run typecheck`: passed.
+- Uncontended local `npm test`: 26/26 passed.
+- `npm run build`: passed; JS 18,345 B raw / 7.34 kB gzip and CSS 8,804 B raw / 2.80 kB gzip.
+- HTTPS `npm test`: 26/26 passed.
+- Hidden pause and frame-rate tests: 20/20 across ten serial repeats each.
+- Factory live URL check: 670 ms, no console/page errors, correct title/lang/h1/main/alt/button labels.
+- Live deterministic flow: win at 4/4, loss at 12/12, both restarts to zero, persistence and five modes verified.
+- Live 390×844 check: full 340 px board in the first viewport; all visible targets at least 44 px.
+- Live 4×-CPU frame measurement: 60.00 fps and 16.8 ms p95 interval.
+- Axe: no serious/critical findings on all app routes or the win dialog.
+- Live Lighthouse: Performance 94, Accessibility 100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.2 s, TBT 290 ms, CLS 0.
+- Privacy: nine requests across the complete independent flow, all same-origin; demo storage isolation and deletion passed.
+- PWA: offline reload and versioned stale-cache removal passed.
+- Security/cache policy and 404 status passed.
+
+## How to reproduce
 
 ```sh
 npm ci
@@ -23,26 +47,13 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test
 ```
 
-Results on 2026-09-02 UTC:
+To reproduce the blocker, win `/demo`, choose **Copy result**, and compare the live-region confirmation with the clipboard payload shown in `.factory/verification-4.md`.
 
-- `npm ci`: 140 packages audited, 0 vulnerabilities.
-- Unit tests: 4/4 passed.
-- ESLint and `tsc --noEmit`: passed.
-- Full Playwright suite: 26/26 passed, including desktop/mobile, keyboard, end screens, touch at 390×844, axe serious/critical checks, privacy request capture, offline reload, service-worker update, and response-policy coverage.
-- Every one of the 20 exact commands in `.factory/claims.json` passed individually. The procedural-route claim correctly ran through Vitest; all other claim commands built the production artifact and ran Playwright.
-- `npm run build`: passed and produced `dist/`. The initial JavaScript is 18,345 bytes raw / 7,323 bytes gzip; CSS is 8,804 bytes raw / 2,807 bytes gzip.
-- `/opt/fleet/lib/verify-url.sh http://127.0.0.1:4173 .factory/evidence/repair-3-local`: passed with a 558 ms local load, zero console/page errors, title, `lang=en`, one h1, a main landmark, no missing image alt text, and no unlabeled buttons.
+## Evidence
 
-## Deployment and live verification
+The full report is `.factory/verification-4.md`. Screenshots, the factory URL report, independent live QA JSON, and Lighthouse JSON are under `.factory/evidence/verification-4-live/`.
 
-The final committed `dist/` was deployed with `/opt/fleet/lib/deploy-static.sh tide-and-tile /work/repo/dist`, reusing only `sf-tide-and-tile` in resource group `sociobot` and `tide-and-tile.sociobot.in`.
-
-`/opt/fleet/lib/verify-url.sh https://tide-and-tile.sociobot.in …` passed: 200 response, 730 ms load, zero console/page errors, title, `lang=en`, one h1, main landmark, image alt text, and button labels. `/`, `/demo`, `/privacy`, and `/terms` returned 200; an unknown route returned 404. The live JavaScript SHA-256 matched the locally built asset. The complete Playwright suite also passed 26/26 against the HTTPS URL, including the final demo win/loss/restart flow, 390px touch flow, keyboard, axe, privacy, offline/update, and headers/caching assertions.
-
-Live mobile Lighthouse on `/demo`: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.1 s, TBT 10 ms, CLS 0.
-
-## Known gaps
-
-None. The game has no backend, accounts, payments, analytics, or third-party runtime dependencies.
+Product code was not modified during verification.
