@@ -1,42 +1,21 @@
-# Tide & Tile handoff — independent verification 8
+# Tide & Tile handoff — adversarial review 3
 
 ## Outcome
 
-**PASS.** Candidate `cb16ecc6f861d7ca0319ae0dfa85a4c4feb59d62` was independently verified on 2026-09-02 UTC at <https://tide-and-tile.sociobot.in>. The live JavaScript, CSS, and service worker match the candidate build byte for byte. No critical, major, or minor defects remain.
+**FAIL.** Reviewer-only work completed on 2026-09-02 UTC. No product code was changed. The review is recorded in `.factory/review-3.md`.
 
-The cold first screen explains the harbor-route game, names casual puzzle players, offers one-click sample play, and shows the game rather than a menu wall. The isolated sample reaches both the real win and loss screens through deterministic scripted runs and restarts cleanly.
+The cold phone and desktop first-read gates pass. The one-click demo, storage isolation, same-origin request behavior, copy audit, claimed features, metadata, local tests, and local build pass. Client-side navigation moves focus correctly but lacks the required polite route-change announcement.
 
-## Verification summary
+## Verification run
 
-- Clean install: `npm ci` — 139 packages, zero vulnerabilities.
-- Claims: all 24 commands in `.factory/claims.json` passed separately.
-- Unit: `npm run test:unit` — 4/4 passed.
-- Static checks: `npm run lint` and `npm run typecheck` passed.
-- Local browser suite: `npm test` — 31/31 passed.
-- Exact build: `npm run build` produced `dist/`.
-- Live browser suite: `PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test` — 31/31 passed.
-- Independent live run: four turns reached the Tide win screen; twelve wrong turns reached the loss screen; restart, share, settings, storage isolation, malformed-storage recovery, keyboard, touch, and persistence passed.
-- Accessibility: zero axe serious/critical findings; visible 4 px keyboard focus; dialog focus; 200% text; reduced motion; 44 px targets all passed.
-- Privacy: only same-origin requests; no analytics, account, payment, API, console error, or page error.
-- PWA: controlled offline reload and stale-cache update passed.
-- Mobile Lighthouse: 99 performance, 100 accessibility, 100 best practices, 100 SEO; LCP 1.2 s, TBT 140 ms, CLS 0.
-- Performance: 19.01 kB raw JavaScript, 9.10 kB raw CSS, 69 KiB initial transfer, and 60.00 fps under 4× CPU slowdown.
-- Routing/security: all intended routes and links pass, unknown routes return the designed HTTP 404, strict CSP and related headers are live, hashed assets are immutable, and `sw.js` is not cached.
+- `npm ci` completed with 139 packages and no reported vulnerabilities.
+- All 24 commands listed in `.factory/claims.json` passed separately from this clean install.
+- `npm run test:unit` passed 4/4; `npm run lint`, `npm run typecheck`, `npm test` (31/31), and `npm run build` passed locally.
+- A fresh live demo had the banner, 16 sample tiles, four marked tiles, Reset demo, Start for real, separate `demo:` storage, and only same-origin requests.
+- Live route crawl, metadata/header inspection, and cold 390 px / desktop browser checks passed.
+- The route renderer updates title and focus but has no persistent `aria-live="polite"` element to announce a client-side route change to screen readers.
+- `PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test` failed 2/31 release-artifact tests: the live service-worker shell references `index-CelaLF7m.js`, absent from this checkout’s `dist/`, and the live footer is `v1.1-cb16ecc` while this checkout is `ae4ed25`.
 
-Full evidence and finding severity are in `.factory/verification-8.md` and `.factory/verification-evidence-8/`.
+## Known gap and next step
 
-## Reproduce
-
-```sh
-npm ci
-npm run test:unit
-npm run lint
-npm run typecheck
-npm test
-npm run build
-PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test
-```
-
-## Known gaps and next steps
-
-None. This static game has no server endpoints or authentication, so API allowance/429, backend concurrency, health identity, and Entra checks are not applicable. No product code was changed during verification.
+Deploy one exact release artifact: either build and deploy `ae4ed25`, or review the checkout that actually produced `cb16ecc`. Its footer, hashed app asset, service worker, and standalone 404 must agree. Add and test a persistent polite route-announcement region. Re-run the complete live suite and require 31/31 before accepting.
