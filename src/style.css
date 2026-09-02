@@ -40,6 +40,7 @@ figcaption { color:#fff; padding:7px 10px; font-weight:800 }
 .statbar { display:flex; gap:13px; align-items:center; flex-wrap:wrap; font-size:.9rem }
 .statbar b { font-variant-numeric:tabular-nums }
 .statbar button { min-height:44px; padding:6px 9px; background:var(--foam) }
+.sound-control { display:flex; align-items:center; gap:7px }
 .tip { background:var(--foam); color:var(--ink); padding:11px 14px; border-left:6px solid var(--tile); font-weight:700 }
 .board { width:min(100%,580px); margin:28px auto; display:grid; grid-template-columns:repeat(4,1fr); gap:7px }
 .tile { position:relative; aspect-ratio:1; padding:0; min-height:0; box-shadow:3px 3px 0 #060e16; background:var(--tile); border-width:3px; display:grid; place-items:center }

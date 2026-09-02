@@ -15,13 +15,28 @@ async function boardSignature(page: import('@playwright/test').Page) {
 test('@claim:demo-sandbox loads a guided sample and writes only demo storage', async ({ page }) => {
   await page.goto('/');
   await page.evaluate(() => localStorage.setItem('tide:tide-and-tile', JSON.stringify({ sentinel: 'real progress' })));
-  await page.goto('/demo'); await expect(page.getByText('Demo — sample data, nothing is saved')).toBeVisible();
+  await page.getByRole('link', { name: 'Try it with sample data' }).click();
+  await expect(page).toHaveURL(/\?demo=1$/); await expect(page).toHaveTitle('Demo — Tide & Tile');
+  await expect(page.getByText('Demo — sample data, nothing is saved')).toBeVisible();
   await page.locator('.tile').first().click();
   const keys = await page.evaluate(() => Object.keys(localStorage));
   expect(keys.some(key => key.startsWith('demo:'))).toBeTruthy();
   expect(await page.evaluate(() => localStorage.getItem('tide:tide-and-tile'))).toBe('{"sentinel":"real progress"}');
+  await page.getByRole('button', { name: 'Reset demo' }).click(); await expect(page.locator('#turns')).toHaveText('0');
+  expect(await page.evaluate(() => localStorage.getItem('tide:tide-and-tile'))).toBe('{"sentinel":"real progress"}');
   await page.getByRole('link', { name: 'Privacy' }).first().click();
   expect(await page.evaluate(() => localStorage.getItem('demo:tide-and-tile'))).toBeNull();
+});
+
+test('@claim:sample-four-turn proves the marked sample and exact four-turn finish', async ({ page }) => {
+  await page.goto('/?demo=1');
+  await expect(page.locator('#par')).toHaveText('4');
+  await expect(page.locator('figcaption')).toHaveText('Four tiles need one turn in the sample.');
+  const marked = page.locator('.tile.misplaced'); await expect(marked).toHaveCount(4);
+  expect(await marked.evaluateAll(tiles => tiles.map(tile => (tile as HTMLElement).dataset.needed))).toEqual(['1', '1', '1', '1']);
+  await solveSample(page);
+  await expect(page.locator('#turns')).toHaveText('4');
+  await expect(page.getByRole('dialog', { name: 'The harbor is connected' })).toContainText('Tide medal. 4 turns; fewest is 4.');
 });
 
 test('@claim:privacy-local only makes same-origin requests during a complete demo run', async ({ page, baseURL }) => {
@@ -46,12 +61,12 @@ test('@claim:daily-boundary always opens today and keeps archive progress separa
   expect(today).toBe(await page.evaluate(() => new Date().toISOString().slice(0, 10)));
   await solveSample(page);
   await page.getByRole('button', { name: 'Play this route again' }).click();
-  await page.getByRole('button', { name: /^Dock lesson/ }).click();
+  await page.getByRole('button', { name: 'Play the 4-turn guided route Dock lesson' }).click();
   await page.locator('.tile').first().click();
   await page.reload();
   await expect(page.locator('#game-title')).toHaveText('Today’s tide');
   await expect(page.locator('#board')).toHaveAttribute('data-seed', today!);
-  await page.getByRole('button', { name: /^Dock lesson/ }).click();
+  await page.getByRole('button', { name: 'Play the 4-turn guided route Dock lesson' }).click();
   await expect(page.locator('#turns')).toHaveText('1');
   await page.getByRole('button', { name: 'Return to today’s board' }).click();
   await page.evaluate(() => {
@@ -70,10 +85,14 @@ test('@claim:archive-gate requires today’s exact UTC completion before rising 
   await solveSample(page);
   await expect(archiveButtons.first()).toBeEnabled();
   await page.getByRole('button', { name: 'Play this route again' }).click();
-  const expectedNames = ['Dock lesson', 'Breakwater bend', 'Harbor circuit'];
+  const expectedControls = [
+    ['Play the 4-turn guided route Dock lesson', 'Dock lesson'],
+    ['Practice 20-turn corners Breakwater bend', 'Breakwater bend'],
+    ['Play the 25-turn scramble Harbor circuit', 'Harbor circuit']
+  ] as const;
   const pars: number[] = [];
-  for (const name of expectedNames) {
-    await page.getByRole('button', { name: new RegExp(`^${name}`) }).click();
+  for (const [control] of expectedControls) {
+    await page.getByRole('button', { name: control }).click();
     pars.push(Number(await page.locator('#par').textContent()));
     await expect(page.locator('#tip')).toContainText(`${pars.at(-1)} misplaced`);
     await page.getByRole('button', { name: 'Return to today’s board' }).click();
@@ -120,17 +139,23 @@ test('@claim:end-screens reaches real win and loss screens and restarts from eac
 });
 
 test('@claim:progress-persistence restores a completed board, best score, and sound setting', async ({ page }) => {
-  await page.goto('/demo'); await page.getByRole('button', { name: 'Sound on' }).click(); await solveSample(page); await page.reload();
+  await page.goto('/demo'); await expect(page.getByText('Sound: on')).toBeVisible(); await page.getByRole('button', { name: 'Turn sound off' }).click(); await solveSample(page); await page.reload();
   await expect(page.getByRole('dialog', { name: 'The harbor is connected' })).toBeVisible(); await expect(page.locator('#turns')).toHaveText('4');
-  await expect(page.getByRole('dialog')).toContainText('Best for this seed: 4 turns.'); await expect(page.getByRole('button', { name: 'Sound off' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.getByRole('dialog')).toContainText('Best for this board: 4 turns.'); await expect(page.getByText('Sound: off')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Turn sound on' })).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('@claim:advertised-modes loads sample, daily, and all three distinct archive routes', async ({ page }) => {
   await page.goto('/demo'); expect(await page.locator('#board').getAttribute('data-seed')).toBe('sample-harbor'); const signatures = new Set<string>([await boardSignature(page)]);
   await page.getByRole('button', { name: 'Start for real' }).click(); await expect(page).toHaveURL('/');
   signatures.add(await boardSignature(page)); await solveSample(page); await page.getByRole('button', { name: 'Play this route again' }).click();
-  for (const name of ['Dock lesson', 'Breakwater bend', 'Harbor circuit']) {
-    await page.getByRole('button', { name: new RegExp(`^${name}`) }).click();
+  const archiveControls = [
+    ['Play the 4-turn guided route Dock lesson', 'Dock lesson'],
+    ['Practice 20-turn corners Breakwater bend', 'Breakwater bend'],
+    ['Play the 25-turn scramble Harbor circuit', 'Harbor circuit']
+  ] as const;
+  for (const [control, name] of archiveControls) {
+    await page.getByRole('button', { name: control }).click();
     signatures.add(await boardSignature(page));
     await expect(page.locator('#game-title')).toHaveText(name);
     await page.getByRole('button', { name: 'Return to today’s board' }).click();
@@ -138,11 +163,11 @@ test('@claim:advertised-modes loads sample, daily, and all three distinct archiv
   expect(signatures.size).toBe(5);
 });
 
-test('@claim:copy-result copies the product name, seed, turns, fewest score, and route result', async ({ page, context }) => {
+test('@claim:copy-result copies the game, board, turns, fewest score, and route result', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']); await page.goto('/demo'); await solveSample(page);
   await page.locator('#end-share').click();
-  await expect(page.locator('#result')).toHaveText('Result copied: product name, seed, turn count, fewest score, and route result.');
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('Tide & Tile sample-harbor\n4 turns · fewest 4\nOne continuous harbor route');
+  await expect(page.locator('#result')).toHaveText('Result copied: game, board, turn count, fewest score, and route result.');
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('Tide & Tile\nBoard: Sample harbor\n4 turns · fewest 4\nOne continuous harbor route');
 });
 
 test('@claim:hidden-pause pauses fixed simulation steps while the page is hidden', async ({ page }) => {
@@ -236,6 +261,14 @@ test('legal terms match MIT rights and legal Archive links return to the home ar
   await page.goto('/privacy'); const privacyArchive = page.getByRole('link', { name: 'Archive' }); await expect(privacyArchive).toHaveAttribute('href', '/#archive'); await privacyArchive.click(); await expect(page).toHaveURL('/#archive');
 });
 
+test('history navigation restores the route and moves focus to its heading', async ({ page }) => {
+  await page.goto('/'); await page.getByRole('link', { name: 'Privacy' }).first().click();
+  await expect(page).toHaveURL('/privacy'); await expect(page.getByRole('heading', { name: 'Privacy at Tide & Tile' })).toBeFocused();
+  await page.goBack(); await expect(page).toHaveURL('/'); await expect(page.getByRole('heading', { name: 'Make today’s harbor route' })).toBeFocused();
+  await page.goto('/missing-harbor-page'); await expect(page).toHaveTitle('Page not found — Tide & Tile');
+  await expect(page.getByRole('heading', { name: 'This harbor page is missing' })).toBeVisible();
+});
+
 test('service worker precache remains below 2 MiB and omits social preview art', async ({ request }) => {
   const worker = await (await request.get('/sw.js')).text();
   const shell = JSON.parse(worker.match(/const SHELL=(\[[^;]+\]);/)![1]) as string[];
@@ -246,7 +279,7 @@ test('service worker precache remains below 2 MiB and omits social preview art',
 
 test('all app routes and the end dialog have no serious or critical axe violations', async ({ browser, baseURL }) => {
   const context = await browser.newContext({ bypassCSP: true }); const page = await context.newPage();
-  for (const route of ['/', '/demo', '/privacy', '/terms']) {
+  for (const route of ['/', '/?demo=1', '/demo', '/privacy', '/terms']) {
     await page.goto(`${baseURL}${route}`); await page.addScriptTag({ content: readFileSync('node_modules/axe-core/axe.min.js', 'utf8') });
     const result = await page.evaluate(async () => await (window as typeof window & { axe: { run: (element?: unknown, options?: unknown) => Promise<{ violations: Array<{ impact: string }> }> } }).axe.run(document, { runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa'] } }));
     expect(result.violations.filter(violation => ['serious', 'critical'].includes(violation.impact)), route).toEqual([]);
@@ -267,21 +300,33 @@ test('the completed route draws once and reduced motion shortens it to an instan
 
 test('routes load without console errors and the standalone 404 keeps shared navigation and build identity', async ({ page }) => {
   const errors: string[] = []; page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); page.on('pageerror', error => errors.push(error.message));
-  for (const route of ['/', '/demo', '/privacy', '/terms']) { await page.goto(route); await expect(page.locator('main')).toBeVisible(); await expect(page.locator('h1')).toHaveCount(1); }
+  const routes = [
+    ['/', 'Tide & Tile — Make a daily harbor route', 'https://tide-and-tile.sociobot.in/'],
+    ['/?demo=1', 'Demo — Tide & Tile', 'https://tide-and-tile.sociobot.in/demo'],
+    ['/demo', 'Demo — Tide & Tile', 'https://tide-and-tile.sociobot.in/demo'],
+    ['/privacy', 'Privacy — Tide & Tile', 'https://tide-and-tile.sociobot.in/privacy'],
+    ['/terms', 'Terms — Tide & Tile', 'https://tide-and-tile.sociobot.in/terms']
+  ];
+  for (const [route, title, canonical] of routes) {
+    await page.goto(route); await expect(page.locator('main')).toBeVisible(); await expect(page.locator('h1')).toHaveCount(1);
+    await expect(page).toHaveTitle(title); await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', canonical);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /.+/);
+  }
   await page.goto('/404.html');
   const revision = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { encoding: 'utf8' }).trim();
   await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible(); await expect(page.locator('footer')).toContainText(`v1.1-${revision}`);
   expect(errors).toEqual([]);
 });
 
-test('release documentation records the intended audience, session length, and complete generated-art provenance', () => {
+test('@claim:art-provenance records the visible artwork claim in source and design records', () => {
   const readme = readFileSync('README.md', 'utf8');
-  expect(readme).toContain('casual players'); expect(readme).toContain('two-to-five-minute');
-  expect(readme).toContain('Copy result includes the product name, seed, turn count, fewest score, and route result.');
+  expect(readme).toContain('casual players'); expect(readme).not.toContain('two-to-five-minute');
+  expect(readme).toContain('Copy result includes the game, board, turn count, fewest score, and route result.');
   const provenance = JSON.parse(readFileSync('assets/src/harbor-table.png.json', 'utf8')) as Record<string, string>;
-  expect(provenance).toMatchObject({ deployment: 'factory-image', model: 'gpt-image-1', generated: '2026-09-01' });
+  expect(provenance).toMatchObject({ deployment: 'factory-image', model: 'gpt-image-1', generated: '2026-09-01', prompt: expect.stringContaining('harbor puzzle table') });
   const design = readFileSync('.factory/design.md', 'utf8');
   expect(design).toContain('Generated 2026-09-01 with the `gpt-image-1` model');
+  expect(design).toContain('assets/src/harbor-table.png.json');
 });
 
 test('claim manifest has one exact tagged regression for every declared promise', async () => {
