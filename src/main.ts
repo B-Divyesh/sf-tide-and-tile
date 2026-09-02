@@ -110,7 +110,7 @@ function turnTile(index: number) {
 }
 function copyResult() {
   const text = `Tide & Tile ${board.seed}\n${turns} turns · fewest ${board.par}\nOne continuous harbor route`;
-  navigator.clipboard.writeText(text).then(() => { const result = document.querySelector('#result'); if (result) result.textContent = 'Result copied. It contains only the seed and turn count.'; }).catch(() => { const result = document.querySelector('#result'); if (result) result.textContent = text; });
+  navigator.clipboard.writeText(text).then(() => { const result = document.querySelector('#result'); if (result) result.textContent = 'Result copied: product name, seed, turn count, fewest score, and route result.'; }).catch(() => { const result = document.querySelector('#result'); if (result) result.textContent = text; });
 }
 function resetCurrent(message = 'Board restarted.') { loadBoard(board.seed, boardName, guided); renderGame(); const result = document.querySelector('#result'); if (result) result.textContent = message; }
 function chirp() {

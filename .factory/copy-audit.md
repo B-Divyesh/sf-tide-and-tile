@@ -24,6 +24,7 @@
 | Finish near the fewest turns to earn a medal. | 9 | pass |
 | There are no timers, lives, accounts, or leaderboards. | 8 | pass |
 | The turn limit gives each route a clear finish. | 9 | pass |
+| Result copied: product name, seed, turn count, fewest score, and route result. | 11 | pass |
 
 No sentence exceeds 22 words. No sentence contains a banned word.
 

@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test';
+import { execFileSync } from 'node:child_process';
 import { readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -137,10 +138,10 @@ test('@claim:advertised-modes loads sample, daily, and all three distinct archiv
   expect(signatures.size).toBe(5);
 });
 
-test('@claim:copy-result copies only the seed, turns, fewest score, and route result', async ({ page, context }) => {
+test('@claim:copy-result copies the product name, seed, turns, fewest score, and route result', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']); await page.goto('/demo'); await solveSample(page);
   await page.locator('#end-share').click();
-  await expect(page.locator('#result')).toHaveText(/Result copied/);
+  await expect(page.locator('#result')).toHaveText('Result copied: product name, seed, turn count, fewest score, and route result.');
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('Tide & Tile sample-harbor\n4 turns · fewest 4\nOne continuous harbor route');
 });
 
@@ -264,12 +265,23 @@ test('the completed route draws once and reduced motion shortens it to an instan
   expect(Number.parseFloat(duration)).toBeLessThanOrEqual(0.001); await context.close();
 });
 
-test('routes load without console errors and the standalone 404 keeps shared navigation', async ({ page }) => {
+test('routes load without console errors and the standalone 404 keeps shared navigation and build identity', async ({ page }) => {
   const errors: string[] = []; page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); }); page.on('pageerror', error => errors.push(error.message));
   for (const route of ['/', '/demo', '/privacy', '/terms']) { await page.goto(route); await expect(page.locator('main')).toBeVisible(); await expect(page.locator('h1')).toHaveCount(1); }
   await page.goto('/404.html');
-  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible(); await expect(page.locator('footer')).toContainText('v1.2-repair');
+  const revision = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { encoding: 'utf8' }).trim();
+  await expect(page.getByRole('navigation', { name: 'Main navigation' })).toBeVisible(); await expect(page.locator('footer')).toContainText(`v1.1-${revision}`);
   expect(errors).toEqual([]);
+});
+
+test('release documentation records the intended audience, session length, and complete generated-art provenance', () => {
+  const readme = readFileSync('README.md', 'utf8');
+  expect(readme).toContain('casual players'); expect(readme).toContain('two-to-five-minute');
+  expect(readme).toContain('Copy result includes the product name, seed, turn count, fewest score, and route result.');
+  const provenance = JSON.parse(readFileSync('assets/src/harbor-table.png.json', 'utf8')) as Record<string, string>;
+  expect(provenance).toMatchObject({ deployment: 'factory-image', model: 'gpt-image-1', generated: '2026-09-01' });
+  const design = readFileSync('.factory/design.md', 'utf8');
+  expect(design).toContain('Generated 2026-09-01 with the `gpt-image-1` model');
 });
 
 test('claim manifest has one exact tagged regression for every declared promise', async () => {

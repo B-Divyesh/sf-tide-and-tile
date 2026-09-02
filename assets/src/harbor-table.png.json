@@ -1,1 +1,8 @@
-{"prompt": "top-down editorial illustration of a small harbor puzzle table, square ceramic water tiles and chart, neo-brutalist screen-print, no text, no watermark, no logo, no people", "deployment": "factory-image", "size": "1536x1024", "quality": "low"}
+{
+  "prompt": "top-down editorial illustration of a small harbor puzzle table, square ceramic water tiles and chart, neo-brutalist screen-print, no text, no watermark, no logo, no people",
+  "model": "gpt-image-1",
+  "deployment": "factory-image",
+  "generated": "2026-09-01",
+  "size": "1536x1024",
+  "quality": "low"
+}

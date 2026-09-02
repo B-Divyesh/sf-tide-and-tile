@@ -1,6 +1,6 @@
 # Tide & Tile
 
-Rotate a 4×4 grid into one continuous dock-to-harbor route. Tide & Tile is a short daily browser puzzle. A run ends with a connected route or the board’s turn limit.
+Tide & Tile is a daily browser puzzle for casual players who want a calm two-to-five-minute break. Rotate a 4×4 grid into one continuous dock-to-harbor route. A run ends with a connected route or the board’s turn limit.
 
 Try the isolated sample at `/demo`. Its four marked tiles each need one turn. Demo state uses only `demo:` local-storage keys and is deleted when you leave.
 
@@ -32,7 +32,7 @@ The unit suite checks route connectivity, the exact four-turn sample, determinis
 - Archive practice unlocks after today’s win. Its routes rise from 4 to 20 to 25 misplaced tiles.
 - Daily, archive, and demo progress use separate records. All five modes have distinct routes.
 - Current rotations, completed results, best scores, and sound preference persist in local storage.
-- Copy result includes only the seed, turns, fewest score, and route result.
+- Copy result includes the product name, seed, turn count, fewest score, and route result.
 - The full board fits at 390px, and touch controls are at least 44px.
 - Play is free. There are no accounts, payments, analytics, timers, lives, or leaderboards.
 - The fixed-step game loop targets 60 frames per second. A hidden tab runs zero simulation steps and discards elapsed time before it resumes.

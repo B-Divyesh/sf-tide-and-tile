@@ -1,9 +1,17 @@
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { cpSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join, relative } from 'node:path';
 
 const root = new URL('../', import.meta.url).pathname;
 const dist = join(root, 'dist');
+let revision = 'local';
+try { revision = execFileSync('git', ['rev-parse', '--short', 'HEAD'], { cwd: root, encoding: 'utf8' }).trim(); } catch { /* Source archives have no Git revision. */ }
+const buildVersion = `v1.1-${revision}`;
+const errorPagePath = join(dist, '404.html');
+const errorPage = readFileSync(errorPagePath, 'utf8');
+if (!errorPage.includes('__BUILD_VERSION__')) throw new Error('404 page is missing its build-version placeholder.');
+writeFileSync(errorPagePath, errorPage.replaceAll('__BUILD_VERSION__', buildVersion));
 const files = [];
 function walk(directory) {
   for (const entry of readdirSync(directory, { withFileTypes: true })) {

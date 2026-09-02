@@ -28,7 +28,9 @@ Win and loss use a centered paper-sheet dialog over the dark board. This is the 
 
 ## Original asset plan and provenance
 
-One generated editorial illustration appears in the landing/explanation area: a top-down harbour map table with chunky water-channel tiles, no lettering. It sets the tactile world but never carries required information. It will be generated with the factory image deployment, reviewed for artifacts, converted to WebP under 300 KB, and disclosed in the footer. Board tiles, icons, and water strokes are authored procedurally in Canvas/SVG code.
+One generated editorial illustration appears in the landing/explanation area: a top-down harbour map table with chunky water-channel tiles, no lettering. It sets the tactile world but never carries required information. It was generated with the factory image deployment, reviewed for artifacts, converted to WebP under 300 KB, and is disclosed in the footer. Board tiles, icons, and water strokes are authored procedurally in Canvas/SVG code.
+
+Generated 2026-09-01 with the `gpt-image-1` model through the `factory-image` Azure AI Foundry deployment. The original product artwork is recorded in `assets/src/harbor-table.png.json`; the image was reviewed for text, watermarks, logos, seams, and unintended symbols before use.
 
 Prompt sheet: *top-down editorial illustration of a small harbor puzzle table, four by four chunky square ceramic tiles with blue water channels, a paper chart and brass compass nearby, neo-brutalist screen-print style, flat cream, navy, bright blue, ochre and harbor red palette, crisp offset ink outlines, soft directional work light, no words, no logo, no watermark, no people.*
 
