@@ -6,4 +6,4 @@ The banner stays visible in demo mode. **Reset demo** restores the sample. **Sta
 
 Complete the four marked rotations to reach the win screen. Use any wrong tile until turn 12 to reach the loss screen. Both screens restart the same route with one action. The versioned service worker makes the sample available after an offline reload.
 
-Real data stores daily boards by date and practice boards by internal route code. Practice stays locked until `completedDailyUtc` matches today’s date. Demo data never unlocks it.
+Real data stores daily boards by date and practice boards by internal route code. All three practice routes are available from a fresh game. Demo play does not change their real progress.

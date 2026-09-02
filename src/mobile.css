@@ -24,6 +24,7 @@
   .game-heading { align-items:center; flex-direction:row; flex-wrap:wrap; gap:6px }
   .game-heading .eyebrow { display:none }
   .game-heading h2 { font-size:1.35rem; white-space:nowrap }
+  .board-id { margin:3px 0 0; font-size:.72rem; line-height:1.1 }
   .statbar { justify-content:flex-end; margin-left:auto; max-width:100%; gap:4px 8px; font-size:.72rem; line-height:1.1 }
   .sound-control { gap:4px }
   .statbar button { font-size:.72rem; min-height:44px; padding:4px 6px }

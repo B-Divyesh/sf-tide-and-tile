@@ -78,13 +78,12 @@ test('@claim:daily-boundary always opens today and keeps archive progress separa
   await expect(page.locator('#board')).toHaveAttribute('data-seed', today!);
 });
 
-test('@claim:archive-gate requires today’s exact UTC completion before rising archive practice', async ({ page }) => {
+test('@claim:archive-practice keeps rising archive practice available from fresh state', async ({ page }) => {
   await page.goto('/');
   const archiveButtons = page.locator('[data-archive]');
-  await expect(archiveButtons.first()).toBeDisabled();
-  await solveSample(page);
-  await expect(archiveButtons.first()).toBeEnabled();
-  await page.getByRole('button', { name: 'Play this route again' }).click();
+  await expect(archiveButtons).toHaveCount(3);
+  await expect(page.getByText('Practice three routes at any time. They rise from 4 to 25 misplaced tiles.')).toBeVisible();
+  for (const button of await archiveButtons.all()) await expect(button).toBeEnabled();
   const expectedControls = [
     ['Play the 4-turn guided route Dock lesson', 'Dock lesson'],
     ['Practice 20-turn corners Breakwater bend', 'Breakwater bend'],
@@ -102,7 +101,8 @@ test('@claim:archive-gate requires today’s exact UTC completion before rising 
     const key = 'tide:tide-and-tile'; const data = JSON.parse(localStorage.getItem(key) || '{}');
     data.completedDailyUtc = '1999-01-01'; localStorage.setItem(key, JSON.stringify(data));
   });
-  await page.reload(); await expect(archiveButtons.first()).toBeDisabled();
+  await page.reload();
+  for (const button of await archiveButtons.all()) await expect(button).toBeEnabled();
 });
 
 test('@claim:progressive-lessons shows three different lessons on the first three real visits', async ({ page }) => {
@@ -168,6 +168,25 @@ test('@claim:copy-result copies the game, board, turns, fewest score, and route 
   await page.locator('#end-share').click();
   await expect(page.locator('#result')).toHaveText('Result copied: game, board, turn count, fewest score, and route result.');
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('Tide & Tile\nBoard: Sample harbor\n4 turns · fewest 4\nOne continuous harbor route');
+});
+
+test('@claim:daily-board-id shows the UTC daily identifier and includes it in the copied result', async ({ page, context }) => {
+  await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+  await page.goto('/');
+  const today = new Date().toISOString().slice(0, 10);
+  await expect(page.locator('#board')).toHaveAttribute('data-seed', today);
+  await expect(page.locator('.board-id')).toHaveText(`Board ID: ${today} (UTC)`);
+  const needed = await page.locator('.tile').evaluateAll(tiles => tiles.map(tile => Number((tile as HTMLElement).dataset.needed)));
+  const expectedTurns = needed.reduce((sum, turns) => sum + turns, 0);
+  await solveSample(page);
+  await page.locator('#end-share').click();
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(`Tide & Tile\nBoard: Today’s tide\nBoard ID: ${today} (UTC)\n${expectedTurns} turns · fewest ${expectedTurns}\nOne continuous harbor route`);
+});
+
+test('@claim:session-length states the intended two-to-five-minute round', async ({ page }) => {
+  await page.goto('/');
+  await expect(page.locator('.intro')).toContainText('2–5-minute puzzle break');
+  expect(readFileSync('README.md', 'utf8')).toContain('A round is designed for two to five minutes.');
 });
 
 test('@claim:hidden-pause pauses fixed simulation steps while the page is hidden', async ({ page }) => {
@@ -320,7 +339,7 @@ test('routes load without console errors and the standalone 404 keeps shared nav
 
 test('@claim:art-provenance records the visible artwork claim in source and design records', () => {
   const readme = readFileSync('README.md', 'utf8');
-  expect(readme).toContain('casual players'); expect(readme).not.toContain('two-to-five-minute');
+  expect(readme).toContain('casual players');
   expect(readme).toContain('Copy result includes the game, board, turn count, fewest score, and route result.');
   const provenance = JSON.parse(readFileSync('assets/src/harbor-table.png.json', 'utf8')) as Record<string, string>;
   expect(provenance).toMatchObject({ deployment: 'factory-image', model: 'gpt-image-1', generated: '2026-09-01', prompt: expect.stringContaining('harbor puzzle table') });

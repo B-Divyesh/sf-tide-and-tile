@@ -9,7 +9,7 @@ Words and numbers count as tokens. No sentence exceeds 22 words. No sentence con
 | Daily harbor puzzle | 3 | pass |
 | Skip to main content | 4 | pass |
 | Make today’s harbor route | 4 | pass |
-| For casual players who want a calm puzzle break with clear rules. | 12 | pass |
+| For casual players who want a calm 2–5-minute puzzle break with clear rules. | 13 | pass; `session-length` claim |
 | Try it with sample data | 5 | pass |
 | Loads a guided board. | 4 | pass |
 | It does not change your daily progress. | 7 | pass |
@@ -19,6 +19,7 @@ Words and numbers count as tokens. No sentence exceeds 22 words. No sentence con
 | Four tiles need one turn in the sample. | 8 | pass; `sample-four-turn` claim |
 | Today’s board | 2 | pass |
 | Today’s tide | 2 | pass |
+| Board ID: 2026-09-02 (UTC) | 4 | pass; date varies; `daily-board-id` claim |
 | Turns 0 / 12 | 2 | pass |
 | Fewest 4 | 2 | pass; `sample-four-turn` claim |
 | Sound: on | 2 | pass; state label |
@@ -31,8 +32,8 @@ Words and numbers count as tokens. No sentence exceeds 22 words. No sentence con
 | Copy result | 2 | pass |
 | Three practice routes | 3 | pass |
 | Archive boards | 2 | pass |
-| Complete today’s board to unlock practice. | 6 | pass |
-| Practice three routes that rise from 4 to 25 misplaced tiles. | 11 | pass; `archive-gate` claim |
+| Practice three routes at any time. | 6 | pass; `archive-practice` claim |
+| They rise from 4 to 25 misplaced tiles. | 8 | pass; `archive-practice` claim |
 | Play the 4-turn guided route | 6 | pass; action label |
 | Dock lesson | 2 | pass; route name |
 | Practice 20-turn corners | 4 | pass; action label |
@@ -61,6 +62,7 @@ Words and numbers count as tokens. No sentence exceeds 22 words. No sentence con
 | Sentence | Words | Status |
 | --- | ---: | --- |
 | Tide & Tile is a daily browser puzzle for casual players who want a calm break. | 14 | pass |
+| A round is designed for two to five minutes. | 9 | pass; `session-length` claim |
 | Rotate a 4×4 grid into one continuous dock-to-harbor route. | 9 | pass |
 | A run ends with a connected route or the board’s turn limit. | 12 | pass |
 | Try the isolated sample at `/?demo=1` or its canonical `/demo` URL. | 10 | pass |
@@ -75,12 +77,14 @@ Words and numbers count as tokens. No sentence exceeds 22 words. No sentence con
 | The build creates `dist/` with a versioned offline cache and the deployment configuration. | 13 | pass |
 | Home always loads today’s board. | 5 | pass |
 | The first three real visits teach turning, matching edges, and the full route. | 12 | pass |
-| Archive practice unlocks after today’s win. | 7 | pass |
+| Archive practice is available from a fresh game. | 8 | pass; `archive-practice` claim |
 | Its routes rise from 4 to 20 to 25 misplaced tiles. | 11 | pass |
 | Daily, archive, and demo progress use separate records. | 8 | pass |
 | All five modes have distinct routes. | 6 | pass |
 | Current rotations, completed results, best scores, and sound choice persist in this browser’s storage. | 14 | pass |
 | Copy result includes the game, board, turn count, fewest score, and route result. | 13 | pass |
+| The daily board shows its UTC date identifier. | 8 | pass; `daily-board-id` claim |
+| Its copied result includes the same identifier. | 7 | pass; `daily-board-id` claim |
 | The full board fits at 390px, and touch controls are at least 44px. | 13 | pass |
 | Play is free. | 3 | pass |
 | There are no accounts, payments, analytics, timers, lives, or leaderboards. | 10 | pass |
@@ -101,8 +105,9 @@ Words and numbers count as tokens. No sentence exceeds 22 words. No sentence con
 | Connected blue line | channel |
 | One play layout | board |
 | Finished connection | route |
-| Older unlocked layout | practice route |
+| Non-daily layout | practice route |
+| Stable daily reference | board ID |
 | Stored game data | this browser’s storage |
 | Maximum moves | turn limit |
 
-Internal documentation and source may use `seed`, `UTC`, and `localStorage`. Player-facing copy does not.
+Internal documentation and source may use `seed` and `localStorage`. Player-facing copy uses `UTC` only to identify the daily board date.
