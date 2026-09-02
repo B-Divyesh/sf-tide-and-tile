@@ -18,8 +18,9 @@ header { height:72px; border-bottom:4px solid var(--ink); display:flex; align-it
 .wordmark i { font-style:normal; color:var(--signal) }
 nav { display:flex; gap:clamp(10px,3vw,28px); font-weight:800 }
 header nav a,header .wordmark,footer a { display:inline-flex; min-width:44px; min-height:44px; align-items:center; justify-content:center }
-main { max-width:1200px; margin:auto; padding:clamp(28px,5vw,76px) clamp(16px,4vw,42px) }
-.hero { display:grid; grid-template-columns:minmax(0,1fr) minmax(270px,.9fr); gap:clamp(24px,5vw,64px); align-items:center; border-bottom:4px solid var(--ink); padding-bottom:48px }
+main { max-width:1280px; margin:auto; padding:clamp(24px,3.5vw,48px) clamp(16px,4vw,42px) }
+.launch { display:grid; grid-template-columns:minmax(300px,.8fr) minmax(480px,1.2fr); gap:clamp(24px,4vw,56px); align-items:start }
+.hero { padding:clamp(24px,4vw,52px) 0 }
 .eyebrow { font-size:.78rem; font-weight:900; letter-spacing:.12em; margin:0 0 8px; color:var(--signal) }
 h1,h2 { font-family:'Arial Black',Arial,sans-serif; letter-spacing:-.055em; line-height:.96; margin:.15em 0 }
 h1 { font-size:clamp(2.65rem,7vw,5.5rem); max-width:640px }
@@ -30,22 +31,24 @@ h2 { font-size:clamp(1.7rem,4vw,3rem) }
 .actions span { font-size:.9rem; max-width:210px }
 .facts { list-style:none; padding:0; margin:25px 0 0; font-weight:700; display:flex; flex-wrap:wrap; gap:9px 18px }
 .facts li::before { content:'✓ '; color:var(--safe) }
+.harbor-art { width:min(100%,720px); margin:clamp(48px,7vw,96px) auto 0; padding-bottom:clamp(38px,6vw,74px); border-bottom:4px solid var(--ink) }
 figure { margin:0; background:var(--ink); border:4px solid var(--ink); box-shadow:8px 8px 0 var(--signal); transform:rotate(1deg) }
 figure img { display:block; width:100%; height:auto; aspect-ratio:3/2; object-fit:cover }
 figcaption { color:#fff; padding:7px 10px; font-weight:800 }
 .demo-banner { max-width:1200px; margin:18px auto -22px; padding:10px 16px; border:3px solid var(--ink); background:var(--tile); display:flex; align-items:center; gap:12px; flex-wrap:wrap }
 .demo-banner button { font-size:.86rem; min-height:44px; padding:7px 10px; background:var(--paper) }
-.game-zone { position:relative; margin-top:54px; background:var(--ink); color:var(--paper); border:4px solid var(--ink); box-shadow:10px 10px 0 var(--signal); padding:clamp(16px,3vw,32px) }
-.game-heading { display:flex; justify-content:space-between; align-items:end; gap:16px }
+.game-zone { position:relative; margin:0; background:var(--ink); color:var(--paper); border:4px solid var(--ink); box-shadow:10px 10px 0 var(--signal); padding:clamp(14px,2vw,24px) }
+.game-heading { display:flex; justify-content:space-between; align-items:start; gap:12px }
 .game-heading .eyebrow { color:var(--tile) }
+.game-heading h2 { font-size:clamp(1.6rem,2.75vw,2.55rem) }
 .board-id { margin:8px 0 0; font-size:.86rem; color:var(--foam) }
 .board-id strong { font-variant-numeric:tabular-nums }
 .statbar { display:flex; gap:13px; align-items:center; flex-wrap:wrap; font-size:.9rem }
 .statbar b { font-variant-numeric:tabular-nums }
 .statbar button { min-height:44px; padding:6px 9px; background:var(--foam) }
 .sound-control { display:flex; align-items:center; gap:7px }
-.tip { background:var(--foam); color:var(--ink); padding:11px 14px; border-left:6px solid var(--tile); font-weight:700 }
-.board { width:min(100%,580px); margin:28px auto; display:grid; grid-template-columns:repeat(4,1fr); gap:7px }
+.tip { background:var(--foam); color:var(--ink); padding:9px 12px; margin:14px 0; border-left:6px solid var(--tile); font-weight:700 }
+.board { width:min(100%,440px); margin:16px auto; display:grid; grid-template-columns:repeat(4,1fr); gap:7px }
 .tile { position:relative; aspect-ratio:1; padding:0; min-height:0; box-shadow:3px 3px 0 #060e16; background:var(--tile); border-width:3px; display:grid; place-items:center }
 .tile:disabled { opacity:1; cursor:default }
 .tile.dock { border-color:var(--foam) }

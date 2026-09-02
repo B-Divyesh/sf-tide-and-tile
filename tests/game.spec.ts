@@ -39,6 +39,47 @@ test('@claim:sample-four-turn proves the marked sample and exact four-turn finis
   await expect(page.getByRole('dialog', { name: 'The harbor is connected' })).toContainText('Tide medal. 4 turns; fewest is 4.');
 });
 
+test('regression: the cold 1440 by 900 home viewport contains the full live 4 by 4 board', async ({ browser, baseURL }) => {
+  const context = await browser.newContext({ viewport: { width: 1440, height: 900 } });
+  const page = await context.newPage();
+  await page.goto(`${baseURL}/`);
+
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+  await expect(page.locator('#board .tile')).toHaveCount(16);
+  await expect(page.locator('#turns')).toHaveText('0');
+  const board = await page.locator('#board').boundingBox();
+  expect(board).not.toBeNull();
+  expect(board!.y).toBeGreaterThanOrEqual(0);
+  expect(board!.y + board!.height).toBeLessThanOrEqual(900);
+  const tilesFit = await page.locator('#board .tile').evaluateAll(tiles => tiles.every(tile => {
+    const bounds = tile.getBoundingClientRect();
+    return bounds.top >= 0 && bounds.bottom <= window.innerHeight && bounds.left >= 0 && bounds.right <= window.innerWidth;
+  }));
+  expect(tilesFit).toBe(true);
+
+  await page.locator('#board .tile').first().click();
+  await expect(page.locator('#turns')).toHaveText('1');
+  await context.close();
+});
+
+test('regression: deterministic sample win, loss, and restart work at desktop and 390px', async ({ browser, baseURL }) => {
+  for (const viewport of [{ width: 1440, height: 900 }, { width: 390, height: 844 }]) {
+    const context = await browser.newContext({ viewport, isMobile: viewport.width === 390, hasTouch: viewport.width === 390 });
+    const page = await context.newPage();
+    await page.goto(`${baseURL}/demo`);
+    await solveSample(page);
+    await expect(page.getByRole('dialog', { name: 'The harbor is connected' })).toContainText('Tide medal. 4 turns; fewest is 4.');
+    await page.getByRole('button', { name: 'Play this route again' }).click();
+    await expect(page.locator('#turns')).toHaveText('0');
+
+    for (let turn = 0; turn < 12; turn++) await page.locator('.tile').last().click();
+    await expect(page.getByRole('dialog', { name: 'The route stayed open' })).toContainText('12 turns');
+    await page.getByRole('button', { name: 'Try this route again' }).click();
+    await expect(page.locator('#turns')).toHaveText('0');
+    await context.close();
+  }
+});
+
 test('@claim:privacy-local only makes same-origin requests during a complete demo run', async ({ page, baseURL }) => {
   const seen: string[] = []; page.on('request', request => seen.push(request.url()));
   await page.goto('/demo'); await solveSample(page);
@@ -48,7 +89,7 @@ test('@claim:privacy-local only makes same-origin requests during a complete dem
 test('@claim:keyboard-tiles rotates and moves across tiles with the keyboard', async ({ page }) => {
   await page.goto('/demo'); const first = page.locator('.tile').first(); await first.focus();
   const before = await first.getAttribute('aria-label'); await page.keyboard.press('Enter');
-  await expect(page.locator('.tile').first()).not.toHaveAttribute('aria-label', before!);
+  await expect(page.locator('.tile').first()).not.toHaveAttribute('aria-label', before!); await expect(page.locator('.tile').first()).toBeFocused();
   const afterEnter = await page.locator('.tile').first().getAttribute('aria-label'); await page.keyboard.press('Space');
   await expect(page.locator('.tile').first()).not.toHaveAttribute('aria-label', afterEnter!);
   await expect(page.locator('.tile').first()).toBeFocused();
