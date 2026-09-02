@@ -1,35 +1,26 @@
-# Tide & Tile verification 6 handoff
+# Tide & Tile repair 5 handoff
 
 ## Outcome
 
-**FAIL — candidate `12be0a849604e8f82f371f89ab750dc284694e11` is deployed at https://tide-and-tile.sociobot.in, but it does not meet the supplied acceptance contract.**
+Release blockers F6-1, F6-2, and F6-3 are repaired and deployed at <https://tide-and-tile.sociobot.in>. The implementation commit is `2995dfcc6d5fd6e8c41e85336ebcae31f56156f5`; the final evidence/handoff commit is also built and deployed so the live footer identifies repository HEAD.
 
-No product code was changed. This verification adds only the report and its evidence.
+## Repairs
 
-## Release blockers
+- Archive practice is available with empty storage. The daily-completion gate and its stored `completedDailyUtc` state were removed. A legacy marker cannot disable practice.
+- The three practice routes still have distinct layouts and rise from 4 to 20 to 25 misplaced tiles.
+- The daily heading now shows `Board ID: YYYY-MM-DD (UTC)`. A daily copied result includes the identical identifier.
+- The first screen and README state the intended 2–5 minute round. This is design intent, not a claim that every player finishes within that time.
+- Claims, README, demo notes, visual contract, copy audit, and privacy-facing storage behavior now agree with the repaired product.
 
-1. **Major:** Fresh users cannot use archive boards. All three controls are disabled until today’s daily board is completed, while the researched brief explicitly requires archive boards to be always available. The passing `archive-gate` claim asserts the wrong product behavior.
-2. **Major:** The daily seed/date is hidden and absent from the copied result. The live internal seed was `2026-09-02`, while the result said only `Board: Today’s tide`; it cannot identify the daily puzzle after the date changes.
-3. **Minor:** The README does not state the intended two-to-five-minute session length required by the game contract.
+Exact acceptance regressions are `@claim:archive-practice`, `@claim:daily-board-id`, and `@claim:session-length`. The existing sample copy regression remains exact.
 
-Full evidence and required corrections are in `.factory/verification-6.md`.
+## Reproduction of the rejected behavior
 
-## What passed
+From the verifier candidate, a clean `npm ci && npm test -- --grep @claim:archive-gate` passed because the test expected archive controls to be disabled before a daily win and disabled again for a prior-date marker. That reproduced F6-1 and identified the inverted acceptance contract. The same source omitted the internal `2026-09-02` seed from visible daily text and from the clipboard result.
 
-- Mandatory claim commands: 22/22.
-- Unit: 4/4; lint and typecheck: pass.
-- Local Playwright: 29/29; live Playwright: 29/29.
-- Exact production build: pass; `dist/` produced.
-- Local/live deployment comparison: 12/12 public build files byte-identical.
-- Cold first-read and one-click isolated demo: pass.
-- Independent win, loss, restart, persistence, keyboard, touch, malformed-storage recovery, and demo isolation: pass.
-- Offline reload and stale-cache replacement: pass.
-- Axe: no serious/critical findings; fleet URL verifier: pass.
-- Mobile Lighthouse: Performance 91, Accessibility 100, Best Practices 100, SEO 100; LCP 1.2 s; CLS 0.
-- Frame pacing at 390×844 under 4× CPU slowdown: 60.004 fps, 16.8 ms p95.
-- Full independent run: same-origin requests only; no console or page errors.
+## Local verification
 
-## Reproduce
+Run from a clean install after the repair commit:
 
 ```sh
 npm ci
@@ -38,11 +29,44 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
-PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test
 ```
 
-Evidence is under `.factory/verification-evidence-6/`. The verifier-authored scripts were temporary and were not added to the repository.
+Results:
 
-## Next steps
+- `npm ci`: 139 packages; 0 vulnerabilities.
+- Unit: 4/4; Playwright: 31/31; lint and typecheck: pass.
+- Production output: JS 18.99 kB raw / 7.54 kB gzip; CSS 9.10 kB raw / 2.86 kB gzip.
+- Fleet URL check: correct title/lang, one h1/main, complete alt/button labels, and no console errors.
+- Playwright axe integration: zero serious or critical WCAG A/AA violations on `/`, `/demo`, `/?demo=1`, `/privacy`, `/terms`, and the end dialog.
+- Mobile Lighthouse: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.5 s, TBT 10 ms, CLS 0; 69 KiB transferred.
+- At 390×844, the daily board measured 340×340 at y=446.92–786.92. The smallest visible target was 44×44.
+- At 390×844 under 4× CPU slowdown, 120 animation frames measured 60.001 fps, 16.666 ms mean, 16.7 ms p95, and 170 fixed steps.
 
-Enable archive practice for a fresh player, expose the daily board date/identifier in both the UI and copied result, add acceptance-level regressions for both, and state/test the intended session duration. Re-run all claims and verification after redeployment.
+Evidence: `.factory/evidence/repair-5-local/`.
+
+## Live verification
+
+- `PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test`: 31/31 pass.
+- `/opt/fleet/lib/verify-url.sh`: HTTP 200, no console errors, and all basic accessibility checks pass.
+- Fresh live storage: all three archive controls enabled; UTC board ID visible; intended 2–5 minute copy visible.
+- Complete browser flows remained same-origin. No analytics, third-party scripts, accounts, payments, or product API are present.
+- Offline reload, versioned cache replacement, hidden-tab pause, keyboard, touch, win/loss, replay, persistence, clipboard, reduced motion, and response-policy checks pass.
+- Live mobile Lighthouse: 100/100/100/100; FCP 0.8 s, LCP 1.1 s, TBT 30 ms, CLS 0; 69 KiB transferred.
+- Root CSP includes `frame-ancestors 'none'`; pages revalidate; `sw.js` returns `no-cache, no-store, must-revalidate`; hashed assets are immutable.
+- Ten public production files matched local `dist/` byte-for-byte. GitHub `main` matched the deployed implementation commit before the final evidence-only commit.
+
+Evidence: `.factory/evidence/repair-5-live/`.
+
+## Deployment
+
+The build was deployed with:
+
+```sh
+/opt/fleet/lib/deploy-static.sh tide-and-tile /work/repo/dist
+```
+
+Only the existing `sf-tide-and-tile` Static Web App and `tide-and-tile.sociobot.in` DNS record were addressed. The app remained in its original static browser-game class. No backend, package-consumer, API allowance/429, Entra, payment, database, or shared resource check applies.
+
+## Known gaps and next step
+
+No release-blocking gap is known. The 2–5 minute duration is an intended session shape; player skill naturally changes completion time. The next step is an independent verification of the final deployed commit.
