@@ -1,6 +1,6 @@
 # Demo verification
 
-Choose **Try it with sample data** once, or open `/?demo=1` directly. `/demo` is the canonical equivalent. Both URLs immediately load **Sample harbor**, a connected 4×4 route with four marked tiles. Each marked tile needs one clockwise turn, so the shown fewest score is exactly four.
+Choose **Try it with sample data** once, or open `/demo` directly. Both URLs immediately load **Sample board**, a connected 4×4 route with four marked tiles. Each marked tile needs one clockwise turn, so the shown fewest score is exactly four.
 
 The banner stays visible in demo mode. **Reset demo** restores the sample. **Start for real** deletes `demo:tide-and-tile` and opens today’s board. Demo mode never reads or writes `tide:tide-and-tile`.
 

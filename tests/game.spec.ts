@@ -64,7 +64,7 @@ test('@claim:daily-boundary always opens today and keeps archive progress separa
   await page.getByRole('button', { name: 'Play the 4-turn guided route Dock lesson' }).click();
   await page.locator('.tile').first().click();
   await page.reload();
-  await expect(page.locator('#game-title')).toHaveText('Today’s tide');
+  await expect(page.locator('#game-title')).toHaveText('Today’s board');
   await expect(page.locator('#board')).toHaveAttribute('data-seed', today!);
   await page.getByRole('button', { name: 'Play the 4-turn guided route Dock lesson' }).click();
   await expect(page.locator('#turns')).toHaveText('1');
@@ -129,6 +129,24 @@ test('@claim:continuous-route requires one connected dock-to-harbor route', asyn
   await expect(page.getByRole('dialog')).toContainText('Tide medal. 4 turns; fewest is 4.');
 });
 
+test('@claim:medal-thresholds awards every advertised medal band', async ({ page }) => {
+  const cases = [
+    { extraTurns: 0, medal: 'Tide medal', total: 4 },
+    { extraTurns: 4, medal: 'Harbor medal', total: 8 },
+    { extraTurns: 8, medal: 'Dock medal', total: 12 }
+  ];
+  for (const { extraTurns, medal, total } of cases) {
+    await page.goto('/demo');
+    await page.evaluate(() => localStorage.removeItem('demo:tide-and-tile'));
+    await page.reload();
+    const unchangedIndex = await page.locator('.tile[data-needed="0"][aria-label*="corner"]').first().getAttribute('data-i');
+    const unchangedCorner = page.locator(`.tile[data-i="${unchangedIndex}"]`);
+    for (let turn = 0; turn < extraTurns; turn++) await unchangedCorner.click();
+    await solveSample(page);
+    await expect(page.getByRole('dialog', { name: 'The harbor is connected' })).toContainText(`${medal}. ${total} turns; fewest is 4.`);
+  }
+});
+
 test('@claim:end-screens reaches real win and loss screens and restarts from each', async ({ page }) => {
   await page.goto('/demo'); await solveSample(page);
   await expect(page.getByRole('dialog', { name: 'The harbor is connected' })).toBeVisible();
@@ -167,26 +185,20 @@ test('@claim:copy-result copies the game, board, turns, fewest score, and route 
   await context.grantPermissions(['clipboard-read', 'clipboard-write']); await page.goto('/demo'); await solveSample(page);
   await page.locator('#end-share').click();
   await expect(page.locator('#result')).toHaveText('Result copied: game, board, turn count, fewest score, and route result.');
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('Tide & Tile\nBoard: Sample harbor\n4 turns · fewest 4\nOne continuous harbor route');
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe('Tide & Tile\nBoard: Sample board\n4 turns · fewest 4\nOne continuous harbor route');
 });
 
-test('@claim:daily-board-id shows the UTC daily identifier and includes it in the copied result', async ({ page, context }) => {
+test('@claim:daily-board-id shows the board date and includes it in the copied result', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
   await page.goto('/');
   const today = new Date().toISOString().slice(0, 10);
   await expect(page.locator('#board')).toHaveAttribute('data-seed', today);
-  await expect(page.locator('.board-id')).toHaveText(`Board ID: ${today} (UTC)`);
+  await expect(page.locator('.board-id')).toHaveText(`Board date: ${today}`);
   const needed = await page.locator('.tile').evaluateAll(tiles => tiles.map(tile => Number((tile as HTMLElement).dataset.needed)));
   const expectedTurns = needed.reduce((sum, turns) => sum + turns, 0);
   await solveSample(page);
   await page.locator('#end-share').click();
-  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(`Tide & Tile\nBoard: Today’s tide\nBoard ID: ${today} (UTC)\n${expectedTurns} turns · fewest ${expectedTurns}\nOne continuous harbor route`);
-});
-
-test('@claim:session-length states the intended two-to-five-minute round', async ({ page }) => {
-  await page.goto('/');
-  await expect(page.locator('.intro')).toContainText('2–5-minute puzzle break');
-  expect(readFileSync('README.md', 'utf8')).toContain('A round is designed for two to five minutes.');
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(`Tide & Tile\nBoard: Today’s board\nBoard date: ${today}\n${expectedTurns} turns · fewest ${expectedTurns}\nOne continuous harbor route`);
 });
 
 test('@claim:hidden-pause pauses fixed simulation steps while the page is hidden', async ({ page }) => {
