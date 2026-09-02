@@ -1,31 +1,31 @@
-# Tide & Tile handoff — perfection loop round 2
+# Tide & Tile handoff — independent verification 8
 
 ## Outcome
 
-All findings from `.factory/review-1.md` and `.factory/review-2.md` are closed. Tide & Tile remains a static, local-first browser game with its neo-brutalist harbor-workshop identity intact.
+**PASS.** Candidate `cb16ecc6f861d7ca0319ae0dfa85a4c4feb59d62` was independently verified on 2026-09-02 UTC at <https://tide-and-tile.sociobot.in>. The live JavaScript, CSS, and service worker match the candidate build byte for byte. No critical, major, or minor defects remain.
 
-The first screen now uses plain, supportable wording. `/demo` and `/?demo=1` open the isolated four-turn sample in one click, with a persistent banner, reset, and exit. Demo data uses only `demo:tide-and-tile`; leaving removes that record without reading or changing real progress.
+The cold first screen explains the harbor-route game, names casual puzzle players, offers one-click sample play, and shows the game rather than a menu wall. The isolated sample reaches both the real win and loss screens through deterministic scripted runs and restarts cleanly.
 
-The daily and sample headings are “Today’s board” and “Sample board.” Daily results use “Board date,” without player-facing UTC jargon. The unsupported duration statement and tautological claim were removed. A new `medal-thresholds` claim proves Tide, Harbor, and Dock results through real 4-, 8-, and 12-turn browser runs.
+## Verification summary
 
-## Verification evidence
+- Clean install: `npm ci` — 139 packages, zero vulnerabilities.
+- Claims: all 24 commands in `.factory/claims.json` passed separately.
+- Unit: `npm run test:unit` — 4/4 passed.
+- Static checks: `npm run lint` and `npm run typecheck` passed.
+- Local browser suite: `npm test` — 31/31 passed.
+- Exact build: `npm run build` produced `dist/`.
+- Live browser suite: `PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test` — 31/31 passed.
+- Independent live run: four turns reached the Tide win screen; twelve wrong turns reached the loss screen; restart, share, settings, storage isolation, malformed-storage recovery, keyboard, touch, and persistence passed.
+- Accessibility: zero axe serious/critical findings; visible 4 px keyboard focus; dialog focus; 200% text; reduced motion; 44 px targets all passed.
+- Privacy: only same-origin requests; no analytics, account, payment, API, console error, or page error.
+- PWA: controlled offline reload and stale-cache update passed.
+- Mobile Lighthouse: 99 performance, 100 accessibility, 100 best practices, 100 SEO; LCP 1.2 s, TBT 140 ms, CLS 0.
+- Performance: 19.01 kB raw JavaScript, 9.10 kB raw CSS, 69 KiB initial transfer, and 60.00 fps under 4× CPU slowdown.
+- Routing/security: all intended routes and links pass, unknown routes return the designed HTTP 404, strict CSP and related headers are live, hashed assets are immutable, and `sw.js` is not cached.
 
-- Fresh install: `npm ci` completed with zero vulnerabilities.
-- Type and lint: `npm run typecheck` and `npm run lint` passed.
-- Unit: `npm run test:unit` passed 4/4.
-- Full local integration/browser suite: `npm test` passed 31/31.
-- Clean clone: every one of the 24 manifest commands in `.factory/claims.json` passed separately.
-- Full production suite: `PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test` passed 31/31.
-- URL verifier: `.factory/evidence/polish-2-live/verify.json` records HTTP 200, no console errors, `lang=en`, one h1, one main, no missing alt text, and no unlabeled buttons.
-- Accessibility: the Playwright axe integration found no serious or critical WCAG A/AA violations on `/`, `/?demo=1`, `/demo`, `/privacy`, `/terms`, or the win dialog.
-- Mobile Lighthouse: performance 100, accessibility 100, best practices 100, SEO 100. LCP was 1.1 s, CLS 0, and total blocking time 30 ms. Evidence: `.factory/evidence/polish-2-live/lighthouse-mobile.json`.
-- Cold mobile screenshots: `.factory/evidence/polish-2-live/screenshot-mobile.png` and `.factory/evidence/polish-2-live/demo-mobile.png`.
-- Routing: `/`, `/demo`, `/privacy`, `/terms`, and `/404.html` returned 200; `/missing-polish-check` returned the designed 404 with HTTP 404.
-- Response policy: live hashed JavaScript returned one-year immutable caching. The live page returned strict same-origin CSP, `frame-ancestors 'none'`, nosniff, and strict-origin referrer policy.
-- Performance budget: built JavaScript is 19.01 kB raw / 7.53 kB gzip; CSS is 9.10 kB raw / 2.86 kB gzip; the harbor illustration is 60 kB.
-- Game loop: the 60 fps claim passed under 4× CPU slowdown, and the hidden-tab test recorded zero simulation steps while paused.
+Full evidence and finding severity are in `.factory/verification-8.md` and `.factory/verification-evidence-8/`.
 
-## Run and deploy
+## Reproduce
 
 ```sh
 npm ci
@@ -34,12 +34,9 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
-/opt/fleet/lib/deploy-static.sh tide-and-tile /work/repo/dist
 PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test
 ```
 
-Deploy only `dist/`. The build writes the Git revision into the app and standalone 404, and versions the offline cache from its content.
-
 ## Known gaps and next steps
 
-None. No finding of any severity remains open, and no external service, account, analytics, payment, or runtime AI dependency was added.
+None. This static game has no server endpoints or authentication, so API allowance/429, backend concurrency, health identity, and Entra checks are not applicable. No product code was changed during verification.

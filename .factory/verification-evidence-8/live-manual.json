@@ -1,0 +1,78 @@
+{
+  "testedAt": "2026-09-02T05:05:36.123Z",
+  "base": "https://tide-and-tile.sociobot.in",
+  "run": {
+    "first": {
+      "title": "Tide & Tile — Make a daily harbor route",
+      "h1": "Make today’s harbor route",
+      "main": 1,
+      "bodyWidth": 390,
+      "viewport": 390,
+      "board": true,
+      "sampleAction": true
+    },
+    "winText": "ROUTE COMPLETE The harbor is connected Tide medal. 4 turns; fewest is 4. Best for this board: 4 turns. Play this route again Copy result",
+    "lossText": "TURN LIMIT REACHED The route stayed open You used 12 turns. This board allows 12. Restart the same route and turn only the misplaced tiles. Try this route again",
+    "copied": "Tide & Tile\nBoard: Sample board\n4 turns · fewest 4\nOne continuous harbor route",
+    "focusedAfterWin": {
+      "tag": "H2",
+      "text": "The harbor is connected"
+    },
+    "invalidKeyTurnCount": "0",
+    "restartTurnCount": "0",
+    "realStorageUnchanged": true,
+    "demoDeletedOnExit": true,
+    "escapeRecovery": true
+  },
+  "accessibility": {
+    "axeSeriousCritical": 0,
+    "axeRoutes": 5,
+    "keyboardTabToTile": true,
+    "focusedTileStyle": {
+      "tag": "BUTTON",
+      "text": "Row 1, column 1: corner water channel joining north and east. Press to rotate.",
+      "tile": true,
+      "outline": "rgb(196, 71, 61) solid 4px"
+    },
+    "keyboardEnter": true,
+    "arrowNavigation": true,
+    "dialogFocus": true,
+    "reducedMotionDuration": "1e-06s"
+  },
+  "privacy": {
+    "uniqueRequests": [
+      "https://tide-and-tile.sociobot.in/",
+      "https://tide-and-tile.sociobot.in/assets/index-CelaLF7m.js",
+      "https://tide-and-tile.sociobot.in/assets/index-arkqJv9f.css",
+      "https://tide-and-tile.sociobot.in/harbor-table.webp",
+      "https://tide-and-tile.sociobot.in/?demo=1",
+      "https://tide-and-tile.sociobot.in/demo",
+      "https://tide-and-tile.sociobot.in/privacy",
+      "https://tide-and-tile.sociobot.in/terms"
+    ],
+    "thirdParty": [],
+    "consoleAndPageErrors": []
+  },
+  "mobile": {
+    "viewport": "390x844",
+    "boardBox": {
+      "x": 25,
+      "y": 449.890625,
+      "width": 340,
+      "height": 340
+    },
+    "undersizedTargets": 0,
+    "minTargetWidth": 44,
+    "minTargetHeight": 44,
+    "horizontalOverflow": 0
+  },
+  "pwa": {
+    "controlled": true,
+    "offlineHeading": "Make today’s harbor route",
+    "offlineTiles": 16
+  },
+  "performance": {
+    "fpsUnder4xCpu": 60,
+    "simulationSteps": 106
+  }
+}

@@ -1,0 +1,97 @@
+{
+  "routes": [
+    {
+      "route": "/",
+      "status": 200,
+      "title": "Tide & Tile — Make a daily harbor route",
+      "h1s": 1,
+      "mains": 1,
+      "canonical": "https://tide-and-tile.sociobot.in/"
+    },
+    {
+      "route": "/demo",
+      "status": 200,
+      "title": "Demo — Tide & Tile",
+      "h1s": 1,
+      "mains": 1,
+      "canonical": "https://tide-and-tile.sociobot.in/demo"
+    },
+    {
+      "route": "/privacy",
+      "status": 200,
+      "title": "Privacy — Tide & Tile",
+      "h1s": 1,
+      "mains": 1,
+      "canonical": "https://tide-and-tile.sociobot.in/privacy"
+    },
+    {
+      "route": "/terms",
+      "status": 200,
+      "title": "Terms — Tide & Tile",
+      "h1s": 1,
+      "mains": 1,
+      "canonical": "https://tide-and-tile.sociobot.in/terms"
+    }
+  ],
+  "links": [
+    {
+      "href": "https://tide-and-tile.sociobot.in/#main",
+      "status": 200
+    },
+    {
+      "href": "https://tide-and-tile.sociobot.in/",
+      "status": 200
+    },
+    {
+      "href": "https://tide-and-tile.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "href": "https://tide-and-tile.sociobot.in/#archive",
+      "status": 200
+    },
+    {
+      "href": "https://tide-and-tile.sociobot.in/privacy",
+      "status": 200
+    },
+    {
+      "href": "https://tide-and-tile.sociobot.in/?demo=1",
+      "status": 200
+    },
+    {
+      "href": "https://tide-and-tile.sociobot.in/terms",
+      "status": 200
+    }
+  ],
+  "zoom": {
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "h1Visible": true,
+    "restartVisible": true
+  },
+  "recovery": {
+    "errors": [],
+    "tiles": 16,
+    "turns": "0"
+  },
+  "desktop": {
+    "1440x900": {
+      "boardBox": {
+        "x": 430,
+        "y": 907.5,
+        "width": 580,
+        "height": 580
+      },
+      "boardIntersectsViewport": false
+    },
+    "1280x720": {
+      "boardBox": {
+        "x": 350,
+        "y": 899.5,
+        "width": 580,
+        "height": 580
+      },
+      "boardIntersectsViewport": false
+    }
+  }
+}
