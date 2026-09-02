@@ -1,4 +1,20 @@
-# Tide & Tile repair handoff
+# Tide & Tile verification-3 handoff — FAIL
+
+## Independent verification outcome (2026-09-02 UTC)
+
+**FAIL — candidate `fcdadfe9743252b211a2a677a885fc94cf06f361` must not release.** The live URL tested was https://tide-and-tile.sociobot.in and its app asset is byte-identical to the candidate build.
+
+### P0 release blocker
+
+The declared `hidden-pause` claim test is flaky. Its mandatory command, `npm test -- --grep @claim:hidden-pause`, failed in the all-claims run (hidden simulation advanced 4 steps; allowed ≤2) and again in full `npm test` (advanced 6; 25/26 tests passed). A later isolated retry passed, proving nondeterminism rather than a reliable fix. Any failed claim test blocks acceptance.
+
+All other independent QA passed: 19/20 listed claims, lint, typecheck, unit tests (4/4), production build, live deterministic win/loss/restart flow, 390px touch, keyboard, reduced motion, offline reload, same-origin-only request capture, zero console/page errors, live headers/caching, and no serious/critical axe findings. Live Lighthouse: Performance 99, Accessibility 100, Best Practices 100, SEO 100; FCP 1.0 s, LCP 1.3 s, TBT 130 ms, CLS 0.
+
+Re-run every claim from a clean `npm ci` and the full suite after making the hidden-tab test and/or simulation behavior deterministic. Full evidence is in `.factory/verification-3.md`.
+
+---
+
+# Tide & Tile repair handoff (superseded by verification-3 FAIL above)
 
 ## Outcome
 
