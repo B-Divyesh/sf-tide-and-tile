@@ -1,24 +1,25 @@
-# Tide & Tile verification handoff — work order tide-and-tile-verify-10
+# Tide & Tile review handoff — work order tide-and-tile-review-4
 
 ## Outcome
 
-**PASS** for candidate `aac734d24fb26674464f8e1b5591a57d0d40321b` at <https://tide-and-tile.sociobot.in>, verified 2026-09-02 UTC. No product defect was found, and no product code was changed.
+**PASS** for implementation `aac734d24fb26674464f8e1b5591a57d0d40321b` at <https://tide-and-tile.sociobot.in>, reviewed 2026-09-05 UTC. Documentation baseline `38a91b29dc030a6b36c17bd0f32e9bb3a8625e62` contains only the prior report and evidence beyond the implementation. No product code was changed.
 
-The earlier desktop first-frame blocker is resolved: the complete playable 4×4 board is inside the cold 1440×900 viewport. The page also passes the plain-language and one-click demo gates.
+There are zero findings at every severity and zero untested public claims.
 
-## Verification summary
+## What was checked
 
-- All 24 `.factory/claims.json` tests passed when invoked separately from a clean install.
-- `npm run test:unit` passed 4/4; lint and typecheck passed.
-- `npm test` passed 33/33 locally and 33/33 against the live deployment.
-- The production build succeeded with 7.59 kB gzip JS and 3.00 kB gzip CSS.
-- Deterministic live play reached the four-turn Tide win and the 12-turn loss, then restarted cleanly from both.
-- Keyboard, touch, invalid input, persistence, demo isolation, malformed-storage recovery, all five modes, daily boundaries, copy result, offline reload, and service-worker update passed.
-- The live request log was same-origin only. Security and cache headers matched policy.
-- Axe reported no violations on the five application routes. Mobile Lighthouse scored 93/100/100/100 for performance/accessibility/best practices/SEO; LCP was 1.10s and CLS was 0.
-- Live and local deployment artifacts matched byte-for-byte; the live footer reports `v1.1-aac734d`.
+- All 24 declared claim commands passed separately after `npm ci` in a clean clone.
+- Unit tests passed 4/4. Lint and type checking passed. The local browser suite passed 33/33, and the production build created `dist/`.
+- The live suite passed 33/33 from the implementation candidate checkout.
+- Fresh desktop and phone pages showed the complete playable board before scrolling and plainly named the job, audience, and sample action.
+- The isolated sample preserved an existing real record, reset to zero, kept its banner, reached the four-turn win and 12-turn loss, and restarted from both.
+- Keyboard, touch, invalid input, persistence, malformed-storage recovery, all modes, daily boundaries, route titles, legal pages, the designed HTTP 404, offline reload, and service-worker replacement passed.
+- Axe found zero WCAG A/AA violations on all application routes and the win dialog. The URL verifier found no console errors, missing alt text, or unlabeled buttons.
+- Live requests were same-origin only. Candidate and live public artifacts matched byte-for-byte.
+- Mobile Lighthouse scored 99/100/100/100 for performance/accessibility/best practices/SEO. LCP was 1.15 s and CLS was 0.
+- A 390×844 run under 4× CPU throttling measured 60.006 fps.
 
-Full evidence and exact measurements are in [verification-10.md](verification-10.md). Key captures are under `.factory/evidence/`.
+The complete evidence and every earlier-finding disposition are in [review-4.md](review-4.md). Captures, the recorded run, URL-verifier output, and Lighthouse JSON are under `.factory/evidence/review-4/`.
 
 ## Reproduce
 
@@ -29,11 +30,11 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+git checkout --detach aac734d24fb26674464f8e1b5591a57d0d40321b
 PLAYWRIGHT_BASE_URL=https://tide-and-tile.sociobot.in npm test
-mkdir -p .factory/evidence/verify-url
-/opt/fleet/lib/verify-url.sh https://tide-and-tile.sociobot.in .factory/evidence/verify-url
+/opt/fleet/lib/verify-url.sh https://tide-and-tile.sociobot.in .factory/evidence/review-4/verify-url
 ```
 
 ## Known gaps and next steps
 
-No known release gap remains. This static, account-free game has no server API, so rate-limit and identity-provider checks are not applicable. Deployment remains factory-owned; no infrastructure, DNS, billing, or unrelated resource was accessed or changed during verification.
+No known product gap remains. This is a static, account-free game, so backend health, tenant isolation, restart persistence, and 429 checks do not apply. Deployment remains factory-owned.
