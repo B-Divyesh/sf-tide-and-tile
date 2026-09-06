@@ -1,0 +1,30 @@
+[
+  {
+    "href": "https://tide-and-tile.sociobot.in/",
+    "status": 200
+  },
+  {
+    "href": "https://tide-and-tile.sociobot.in/#archive",
+    "status": 200
+  },
+  {
+    "href": "https://tide-and-tile.sociobot.in/#main",
+    "status": 200
+  },
+  {
+    "href": "https://tide-and-tile.sociobot.in/?demo=1",
+    "status": 200
+  },
+  {
+    "href": "https://tide-and-tile.sociobot.in/demo",
+    "status": 200
+  },
+  {
+    "href": "https://tide-and-tile.sociobot.in/privacy",
+    "status": 200
+  },
+  {
+    "href": "https://tide-and-tile.sociobot.in/terms",
+    "status": 200
+  }
+]

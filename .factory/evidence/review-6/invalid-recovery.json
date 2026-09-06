@@ -1,0 +1,12 @@
+{
+  "invalid": {
+    "sameTileLabel": true,
+    "sameTurns": true
+  },
+  "recovery": {
+    "tiles": 16,
+    "turns": "0",
+    "dialog": 0,
+    "errors": []
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "/": {
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  "/demo": {
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  "/privacy": {
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  "/terms": {
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  },
+  "/does-not-exist": {
+    "violations": [],
+    "incomplete": []
+  },
+  "winDialog": {
+    "violations": [],
+    "incomplete": [
+      "color-contrast"
+    ]
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "base": "https://tide-and-tile.sociobot.in",
+  "checks": {},
+  "desktop": {
+    "h1": "Make today’s harbor route",
+    "subtitle": "DAILY HARBOR PUZZLE",
+    "action": "Try it with sample data",
+    "scrollY": 0,
+    "board": {
+      "x": 756,
+      "y": 313.359375,
+      "width": 440,
+      "height": 440
+    },
+    "bannerBefore": true,
+    "marked": 4,
+    "par": "4",
+    "resetTurns": "0",
+    "realRecord": "{\"sentinel\":\"review6 real record\"}",
+    "win": "ROUTE COMPLETE\n\nThe harbor is connected\n\nTide medal. 4 turns; fewest is 4.\n\nBest for this board: 4 turns.\n\nPlay this route again\nCopy result",
+    "focusWin": "H2:The harbor is connected",
+    "loss": "TURN LIMIT REACHED\n\nThe route stayed open\n\nYou used 12 turns. This board allows 12.\n\nRestart the same route and turn only the misplaced tiles.\n\nTry this route again",
+    "errors": []
+  },
+  "mobile": {
+    "h1": "Make today’s harbor route",
+    "subtitle": "DAILY HARBOR PUZZLE",
+    "action": "Try it with sample data",
+    "scrollY": 0,
+    "board": {
+      "x": 25,
+      "y": 466.921875,
+      "width": 340,
+      "height": 340
+    },
+    "bannerBefore": true,
+    "marked": 4,
+    "par": "4",
+    "resetTurns": "0",
+    "realRecord": "{\"sentinel\":\"review6 real record\"}",
+    "win": "ROUTE COMPLETE\n\nThe harbor is connected\n\nTide medal. 4 turns; fewest is 4.\n\nBest for this board: 4 turns.\n\nPlay this route again\nCopy result",
+    "focusWin": "H2:The harbor is connected",
+    "loss": "TURN LIMIT REACHED\n\nThe route stayed open\n\nYou used 12 turns. This board allows 12.\n\nRestart the same route and turn only the misplaced tiles.\n\nTry this route again",
+    "errors": []
+  }
+}
