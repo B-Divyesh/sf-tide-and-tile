@@ -1,0 +1,401 @@
+{
+  "reviewedAt": "2026-09-06T03:27:22.830Z",
+  "base": "https://tide-and-tile.sociobot.in",
+  "desktop": {
+    "firstRead": {
+      "title": "Tide & Tile — Make a daily harbor route",
+      "lang": "en",
+      "h1s": [
+        "Make today’s harbor route"
+      ],
+      "mains": 1,
+      "scrollY": 0,
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "horizontalOverflow": 0,
+      "job": "Make today’s harbor route",
+      "audience": "For casual players who want a calm puzzle break with clear rules.",
+      "firstAction": "Try it with sample data",
+      "actionOutcome": "Loads a guided board. It does not change your daily progress.",
+      "board": {
+        "x": 756,
+        "y": 313.359375,
+        "width": 440,
+        "height": 440
+      },
+      "tileCount": 16,
+      "turns": "0"
+    },
+    "sample": {
+      "marked": 4,
+      "needed": [
+        "1",
+        "1",
+        "1",
+        "1"
+      ],
+      "par": "4"
+    },
+    "focusStyle": {
+      "outline": "rgb(196, 71, 61) solid 4px",
+      "width": "4px",
+      "color": "rgb(196, 71, 61)"
+    },
+    "winSummary": "ROUTE COMPLETE\n\nThe harbor is connected\n\nTide medal. 4 turns; fewest is 4.\n\nBest for this board: 4 turns.\n\nPlay this route again\nCopy result",
+    "lossSummary": "TURN LIMIT REACHED\n\nThe route stayed open\n\nYou used 12 turns. This board allows 12.\n\nRestart the same route and turn only the misplaced tiles.\n\nTry this route again",
+    "clipboard": "Tide & Tile\nBoard: Sample board\n4 turns · fewest 4\nOne continuous harbor route",
+    "realAfterStart": "{\"muted\":false,\"best\":{},\"daily\":{\"2026-09-06\":{\"seed\":\"2026-09-06\",\"name\":\"Today’s board\",\"guided\":false,\"turns\":0,\"state\":\"playing\",\"rotations\":[2,1,2,0,1,2,3,1,1,1,0,0,2,2,0,2]}},\"archives\":{}}",
+    "consoleErrors": [
+      "Failed to load resource: the server responded with a status of 404 ()"
+    ],
+    "requestOrigins": [
+      "https://tide-and-tile.sociobot.in"
+    ]
+  },
+  "phone": {
+    "firstRead": {
+      "title": "Tide & Tile — Make a daily harbor route",
+      "lang": "en",
+      "h1s": [
+        "Make today’s harbor route"
+      ],
+      "mains": 1,
+      "scrollY": 0,
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "horizontalOverflow": 0,
+      "board": {
+        "x": 25,
+        "y": 466.921875,
+        "width": 340,
+        "height": 340
+      },
+      "job": "Make today’s harbor route",
+      "audience": "For casual players who want a calm puzzle break with clear rules.",
+      "firstAction": "Try it with sample data"
+    },
+    "targetSizes": [
+      {
+        "text": "Skip to main content",
+        "width": 164.96875,
+        "height": 44
+      },
+      {
+        "text": "TIDE & TILE",
+        "width": 78.859375,
+        "height": 44
+      },
+      {
+        "text": "Demo",
+        "width": 44,
+        "height": 44
+      },
+      {
+        "text": "Privacy",
+        "width": 50.109375,
+        "height": 44
+      },
+      {
+        "text": "Reset demo",
+        "width": 83.28125,
+        "height": 44
+      },
+      {
+        "text": "Start for real",
+        "width": 86.484375,
+        "height": 44
+      },
+      {
+        "text": "Try it with sample data",
+        "width": 199.609375,
+        "height": 46
+      },
+      {
+        "text": "Turn sound off",
+        "width": 98.375,
+        "height": 44
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "HARBOR",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "DOCK",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "",
+        "width": 82,
+        "height": 82
+      },
+      {
+        "text": "Restart this board",
+        "width": 124.03125,
+        "height": 44
+      },
+      {
+        "text": "Show the next rule",
+        "width": 128.078125,
+        "height": 44
+      },
+      {
+        "text": "Copy result",
+        "width": 86.875,
+        "height": 44
+      },
+      {
+        "text": "Play the 4-turn guided route Dock lesson",
+        "width": 366,
+        "height": 65.984375
+      },
+      {
+        "text": "Practice 20-turn corners Breakwater bend",
+        "width": 366,
+        "height": 65.984375
+      },
+      {
+        "text": "Play the 25-turn scramble Harbor circuit",
+        "width": 366,
+        "height": 65.984375
+      },
+      {
+        "text": "Privacy",
+        "width": 48.265625,
+        "height": 44
+      },
+      {
+        "text": "Terms",
+        "width": 44,
+        "height": 44
+      }
+    ],
+    "zoomOverflow": 0,
+    "consoleErrors": []
+  },
+  "routes": {
+    "routeChecks": [
+      {
+        "path": "/",
+        "status": 200,
+        "title": "Tide & Tile — Make a daily harbor route",
+        "lang": "en",
+        "h1s": [
+          "Make today’s harbor route"
+        ],
+        "mains": 1,
+        "scrollY": 0,
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "horizontalOverflow": 0,
+        "canonical": "https://tide-and-tile.sociobot.in/"
+      },
+      {
+        "path": "/demo",
+        "status": 200,
+        "title": "Demo — Tide & Tile",
+        "lang": "en",
+        "h1s": [
+          "Make today’s harbor route"
+        ],
+        "mains": 1,
+        "scrollY": 0,
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "horizontalOverflow": 0,
+        "canonical": "https://tide-and-tile.sociobot.in/demo"
+      },
+      {
+        "path": "/privacy",
+        "status": 200,
+        "title": "Privacy — Tide & Tile",
+        "lang": "en",
+        "h1s": [
+          "Privacy at Tide & Tile"
+        ],
+        "mains": 1,
+        "scrollY": 0,
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "horizontalOverflow": 0,
+        "canonical": "https://tide-and-tile.sociobot.in/privacy"
+      },
+      {
+        "path": "/terms",
+        "status": 200,
+        "title": "Terms — Tide & Tile",
+        "lang": "en",
+        "h1s": [
+          "Terms for Tide & Tile"
+        ],
+        "mains": 1,
+        "scrollY": 0,
+        "viewport": {
+          "width": 1440,
+          "height": 900
+        },
+        "horizontalOverflow": 0,
+        "canonical": "https://tide-and-tile.sociobot.in/terms"
+      }
+    ],
+    "linkStatuses": [
+      {
+        "href": "https://tide-and-tile.sociobot.in/#main",
+        "status": 200
+      },
+      {
+        "href": "https://tide-and-tile.sociobot.in/",
+        "status": 200
+      },
+      {
+        "href": "https://tide-and-tile.sociobot.in/demo",
+        "status": 200
+      },
+      {
+        "href": "https://tide-and-tile.sociobot.in/#archive",
+        "status": 200
+      },
+      {
+        "href": "https://tide-and-tile.sociobot.in/privacy",
+        "status": 200
+      },
+      {
+        "href": "https://tide-and-tile.sociobot.in/?demo=1",
+        "status": 200
+      },
+      {
+        "href": "https://tide-and-tile.sociobot.in/terms",
+        "status": 200
+      },
+      {
+        "href": "https://tide-and-tile.sociobot.in/demo#main",
+        "status": 200
+      },
+      {
+        "href": "https://tide-and-tile.sociobot.in/privacy#main",
+        "status": 200
+      },
+      {
+        "href": "https://tide-and-tile.sociobot.in/terms#main",
+        "status": 200
+      }
+    ],
+    "missing": {
+      "status": 404,
+      "title": "Page not found — Tide & Tile",
+      "h1": "This harbor page is missing"
+    }
+  },
+  "offline": {
+    "cachesAfterUpdate": [
+      "tide-tile-2c80d50cc04f"
+    ],
+    "offlineTitle": "Demo — Tide & Tile",
+    "offlineH1": "Make today’s harbor route",
+    "tileCount": 16
+  },
+  "reducedMotion": {
+    "completionAnimationDuration": "1e-06s"
+  },
+  "axe": {
+    "routes": [
+      {
+        "path": "/",
+        "violations": []
+      },
+      {
+        "path": "/?demo=1",
+        "violations": []
+      },
+      {
+        "path": "/demo",
+        "violations": []
+      },
+      {
+        "path": "/privacy",
+        "violations": []
+      },
+      {
+        "path": "/terms",
+        "violations": []
+      }
+    ],
+    "dialogViolations": []
+  }
+}
